@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Pace Calculator</string>
+    <string name="pace">Pace</string>
+    <string name="speed">Speed</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="speed_postfix">km/h</string>
+    <string name="pace_postfix">min/km</string>
+    <string name="distance">Distance</string>
+    <string name="time">Time</string>
+</resources>

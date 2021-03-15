@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorAccent">@color/secondaryColor</item>
+        <item name="colorOnPrimary">@color/primaryTextColor</item>
+        <item name="colorOnBackground">@color/primaryTextColor</item>
+    </style>
+
+
+    <style name="pace_speed">
+        <item name="android:paddingLeft">@dimen/default_padding</item>
+    </style>
+    <style name="pace_speed_input" parent="pace_speed">
+        <item name="android:textSize">20sp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+    </style>
+
+    <style name="pace_speed_header" parent="pace_speed">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/primaryDarkColor</item>
+    </style>
+    <style name="pace_speed_header_postfix" parent="pace_speed">
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/lightTextColor</item>
+    </style>
+    <style name="spinner_time_picker">
+        <item name="android:timePickerMode">spinner</item>
+    </style>
+
+    <style name="split_table">
+        <item name="android:background">@color/lightestGray</item>
+    </style>
+
+    <style name="split_row">
+        <item name="android:textSize">12sp</item>
+    </style>
+</resources>
