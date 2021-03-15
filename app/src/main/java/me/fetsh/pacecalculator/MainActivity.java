@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTimeInput;
     private TextView mDistanceInput;
 
-    private DistancesAdapter mAdapter = new DistancesAdapter();
+    private final DistancesAdapter mAdapter = new DistancesAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
