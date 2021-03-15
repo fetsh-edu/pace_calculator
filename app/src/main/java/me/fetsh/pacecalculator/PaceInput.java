@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 public class PaceInput extends ConstraintLayout implements View.OnClickListener {
 
     private final TextView mPaceInput;
+    private final TextView mPacePostfix;
     private Pace pace;
     private PacePicker.OnPaceSetListener onPaceSetListener;
 
@@ -34,12 +35,14 @@ public class PaceInput extends ConstraintLayout implements View.OnClickListener 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.pace_input, this, true);
         mPaceInput = findViewById(R.id.pace_input);
+        mPacePostfix = findViewById(R.id.pace_header_postfix);
         setOnClickListener(this);
     }
 
     public void setPace(Pace pace) {
         this.pace = pace;
         mPaceInput.setText(pace.toString());
+        mPacePostfix.setText(getContext().getText(UnitSystemUtils.getPaceHeader(pace.getUnitSystem())));
     }
 
     public Pace getPace() {
@@ -49,8 +52,7 @@ public class PaceInput extends ConstraintLayout implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         PacePicker pacePicker = new PacePicker(getContext(), onPaceSetListener);
-        pacePicker.setMinutes(pace.getMinutes());
-        pacePicker.setSeconds(pace.getSecondsPart());
+        pacePicker.setPace(pace);
         pacePicker.show();
     }
 

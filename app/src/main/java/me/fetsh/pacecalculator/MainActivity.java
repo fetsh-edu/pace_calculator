@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private void onDataCalculated(Calculator calculator) {
         mPaceInput.setPace(calculator.getPace());
         mSpeedInput.setText(calculator.getSpeed().toString());
+        ((TextView) findViewById(R.id.speed_header_postfix)).setText(UnitSystemUtils.getSpeedHeader(calculator.getSpeed().getUnitSystem()));
         mDistanceInput.setText(calculator.getDistance());
         mTimeInput.setText(calculator.getTime().toString());
 

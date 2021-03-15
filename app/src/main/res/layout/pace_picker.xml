@@ -20,4 +20,12 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         />
+    <NumberPicker
+        android:id="@+id/unit_system"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dip"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        />
 </LinearLayout>

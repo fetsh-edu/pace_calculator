@@ -9,7 +9,10 @@ import android.widget.NumberPicker;
 
 import androidx.annotation.NonNull;
 
+import java.util.Arrays;
+
 public class PacePicker extends AlertDialog {
+
     public interface OnPaceSetListener {
         void onPaceSet(Pace pace);
     }
@@ -17,6 +20,8 @@ public class PacePicker extends AlertDialog {
 
     private final NumberPicker minutesPicker;
     private final NumberPicker secondsPicker;
+    private final NumberPicker unitSystemPicker;
+
 
     public PacePicker(@NonNull Context context, OnPaceSetListener onPaceSetListener) {
         super(context);
@@ -32,10 +37,22 @@ public class PacePicker extends AlertDialog {
 
         minutesPicker = rootPickerView.findViewById(R.id.minutes);
         secondsPicker = rootPickerView.findViewById(R.id.seconds);
+        unitSystemPicker = rootPickerView.findViewById(R.id.unit_system);
         minutesPicker.setMinValue(3);
         minutesPicker.setMaxValue(10);
         secondsPicker.setMinValue(0);
         secondsPicker.setMaxValue(59);
+        final String[] values = Arrays.stream(UnitSystem.values()).map(UnitSystem::name).toArray(String[]::new);
+        unitSystemPicker.setMinValue(0);
+        unitSystemPicker.setMaxValue(values.length - 1);
+        unitSystemPicker.setDisplayedValues(values);
+    }
+
+
+    public void setPace(Pace pace) {
+        setMinutes(pace.getMinutes());
+        setSeconds(pace.getSecondsPart());
+        setUnitSystem(pace.getUnitSystem());
     }
 
     public void setMinutes(int minutes) {
@@ -46,6 +63,10 @@ public class PacePicker extends AlertDialog {
         secondsPicker.setValue(seconds);
     }
 
+    public void setUnitSystem(UnitSystem unitSystem) {
+        unitSystemPicker.setValue(unitSystem.ordinal());
+    }
+
     private void onNegativeButton(DialogInterface dialogInterface, int i) {
         cancel();
     }
@@ -53,6 +74,6 @@ public class PacePicker extends AlertDialog {
     private void onPositiveButton(DialogInterface dialogInterface, int i) {
         if (onPaceSetListener == null) return;
 
-        onPaceSetListener.onPaceSet(new Pace(minutesPicker.getValue(), secondsPicker.getValue()));
+        onPaceSetListener.onPaceSet(Pace.withUnitSystem(UnitSystem.values()[unitSystemPicker.getValue()], minutesPicker.getValue(), secondsPicker.getValue()));
     }
 }

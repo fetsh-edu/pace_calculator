@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 public class Calculator {
 
-    private static final Pace INIT_PACE = new Pace(4, 30);
+    private static final Pace INIT_PACE = Pace.metric(4, 30);
     private static final String INIT_DISTANCE = "Marathon";
     private final OnDataCalculatedListener listener;
 

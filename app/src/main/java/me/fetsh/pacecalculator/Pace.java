@@ -1,49 +1,120 @@
 package me.fetsh.pacecalculator;
 
-public class Pace {
-    private final int seconds;
+public interface Pace {
 
-    public Pace(int min, int sec) {
-        this(min * 60 + sec);
+    static Pace withUnitSystem(UnitSystem us, int min, int sec) {
+        switch (us) {
+            case Imperial: return imperial(min, sec);
+            case Metric:  return metric(min, sec);
+            default: throw new IllegalArgumentException("Wrong unit system: " + us.name());
+        }
     }
 
-    public Pace(int seconds) {
-        this.seconds = seconds;
+    static Pace metric(int min, int sec) {
+        return new MetricPace(min, sec);
+    }
+    static Pace metric(int sec) {
+        return new MetricPace(sec);
+    }
+    static Pace imperial(int min, int sec) {
+        return new ImperialPace(min, sec);
+    }
+    static Pace imperial(int sec) {
+        return new ImperialPace(sec);
     }
 
-    public Pace multipliedBy(double multiplicand) {
-        return new Pace((int) Math.ceil(getSeconds() * multiplicand));
-    }
+    Pace multipliedBy(double distance);
 
-    public int getHours() {
+    default int getMinutes() {
+        return getSeconds() / 60;
+    }
+    default int getHours() {
         return getSeconds() / 3600;
     }
 
-    public int getMinutes() {
-        return getSeconds() / 60;
-    }
-
-    public int getMinutesPart() {
+    default int getMinutesPart() {
         return (getSeconds() % 3600) / 60;
     }
 
-    public int getSecondsPart() {
+    default int getSecondsPart() {
         return getSeconds() % 60;
     }
 
-    public int getSeconds() {
-        return seconds;
+    int getSeconds();
+
+    UnitSystem getUnitSystem();
+
+
+    abstract class AbstractPace implements Pace {
+        private final int seconds;
+
+        private AbstractPace(int min, int sec) {
+            this(min * 60 + sec);
+        }
+
+        private AbstractPace(int seconds) {
+            this.seconds = seconds;
+        }
+
+        public Pace multipliedBy(double multiplicand) {
+            return null;
+        }
+
+        @Override
+        public int getSeconds() {
+            return seconds;
+        }
+
+        @Override
+        public String toString() {
+            int hours = getHours();
+            int minutes = getMinutesPart();
+            int lSeconds = getSecondsPart();
+            if (hours > 0) {
+                return String.format("%d:%02d:%02d", hours, minutes, lSeconds);
+            } else {
+                return String.format("%d:%02d", minutes, lSeconds);
+            }
+        }
     }
 
-    @Override
-    public String toString() {
-        int hours = getHours();
-        int minutes = getMinutesPart();
-        int lSeconds = getSecondsPart();
-        if (hours > 0) {
-            return String.format("%d:%02d:%02d", hours, minutes, lSeconds);
-        } else {
-            return String.format("%d:%02d", minutes, lSeconds);
+    class MetricPace extends AbstractPace {
+
+        public MetricPace(int min, int sec) {
+            super(min, sec);
         }
+
+        public MetricPace(int seconds) {
+            super(seconds);
+        }
+        public Pace multipliedBy(double multiplicand) {
+            return new MetricPace((int) Math.ceil(getSeconds() * multiplicand));
+        }
+
+        @Override
+        public UnitSystem getUnitSystem() {
+            return UnitSystem.Metric;
+        }
+
+    }
+    class ImperialPace extends AbstractPace {
+
+        private ImperialPace(int min, int sec) {
+            super(min, sec);
+        }
+
+        private ImperialPace(int seconds) {
+            super(seconds);
+        }
+
+        public Pace multipliedBy(double multiplicand) {
+            return new ImperialPace((int) Math.ceil(getSeconds() * multiplicand));
+        }
+
+        @Override
+        public UnitSystem getUnitSystem() {
+            return UnitSystem.Imperial;
+        }
+
     }
 }

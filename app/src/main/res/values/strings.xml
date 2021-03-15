@@ -8,4 +8,8 @@
     <string name="pace_postfix">min/km</string>
     <string name="distance">Distance</string>
     <string name="time">Time</string>
+    <string name="min_per_km">min/km</string>
+    <string name="min_per_mile">min/mile</string>
+    <string name="km_per_hour">km/h</string>
+    <string name="miles_per_hour">mph</string>
 </resources>
