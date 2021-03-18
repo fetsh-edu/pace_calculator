@@ -1,83 +1,139 @@
 package me.fetsh.pacecalculator;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
-public interface Distance extends Comparable<Distance> {
+public class Distance implements Comparable<Distance> {
 
-    static Distance getMetric(double distance) {
-        return new MetricDistance(distance);
+    private final BigDecimal amount;
+    private final DistanceUnit unit;
+    private String name;
+
+    private static final DecimalFormat defaultFormatter;
+
+    static {
+        defaultFormatter = new DecimalFormat("#.#", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+        defaultFormatter.setMaximumFractionDigits(340);
     }
 
-    static List<Distance> all() {
-        ArrayList<Distance> distances = new ArrayList<>();
-        for (int i = 0; i <= 42; i++) {
-            if (i == 5) {
-                distances.add(new NamedDistance(i, "5k"));
-            } else if (i == 10) {
-                distances.add(new NamedDistance(i, "10k"));
-            } else {
-                distances.add(getMetric(i));
-            }
+    public Distance(double amount, DistanceUnit unit) {
+        this(amount, unit, null);
+    }
+
+    public Distance(@NonNull double amount, @NonNull DistanceUnit unit, @Nullable String name) {
+        this.amount = new BigDecimal(amount);
+        this.unit = unit;
+        this.name = name;
+    }
+
+    public static Distance marathon() {
+        return new Distance(42.195, DistanceUnit.Kilometer, "Marathon");
+    }
+    public static Distance halfMarathon() {
+        return new Distance(21.0975, DistanceUnit.Kilometer, "1/2 Marathon");
+    }
+    public static Distance fromMillis(int millimeters, DistanceUnit unit) {
+        switch (unit) {
+            case Mile: return new Distance(BigDecimal.valueOf(millimeters).divide(BigDecimal.valueOf(1609344), MathContext.DECIMAL64).doubleValue(), unit);
+            case Meter: return new Distance(BigDecimal.valueOf(millimeters).divide(BigDecimal.valueOf(1000), MathContext.DECIMAL64).doubleValue(), unit);
+            case Kilometer: return new Distance(BigDecimal.valueOf(millimeters).divide(BigDecimal.valueOf(1000000), MathContext.DECIMAL64).doubleValue(), unit);
+            default: throw new IllegalArgumentException("Illegal distance unit: " + unit.name());
         }
-        distances.add(NamedDistance.getMarathon());
-        distances.add(NamedDistance.getHalfMarathon());
+    }
+
+    static List<Distance> all(Distance start, Distance cap, Distance step) {
+        ArrayList<Distance> distances = new ArrayList<>();
+        for (
+                Distance i = start;
+                i.lessThan(cap);
+                i = i.add(step)
+        ) {
+            distances.add(i);
+        }
+        if (cap.greaterThan(Distance.halfMarathon())) distances.add(Distance.halfMarathon());
+        if (cap.greaterThan(Distance.marathon())) distances.add(Distance.marathon());
+        distances.add(cap);
         Collections.sort(distances);
         return distances;
     }
 
-    double getDistance();
+    public double getAmount() {
+        return amount.doubleValue();
+    }
 
-    class AbstractDistance implements Distance {
+    public String getName() {
+        return name;
+    }
 
-        private final double distance;
+    public DistanceUnit getUnit() {
+        return unit;
+    }
 
-        public AbstractDistance(double distance) {
-            this.distance = distance;
-        }
-
-        @Override
-        public double getDistance() {
-            return distance;
-        }
-
-        @Override
-        public int compareTo(Distance o) {
-            return Double.compare(this.distance, o.getDistance());
-        }
-
-        @Override
-        public String toString() {
-            if (distance % (int) distance == 0.0) {
-                return Integer.toString((int) distance);
-            } else {
-                return Double.toString(distance);
-            }
+    private Distance add(Distance step) {
+        if (this.unit == step.unit) {
+            return new Distance(this.amount.add(step.amount).doubleValue(), this.unit);
+        } else {
+            return Distance.fromMillis(getMillimeters() + step.getMillimeters(), this.unit);
         }
     }
 
-    class MetricDistance extends AbstractDistance {
-        public MetricDistance(double distance) {
-            super(distance);
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    private int getMillimeters() {
+        switch (unit) {
+            case Mile: return amount.multiply(BigDecimal.valueOf(1609344)).intValue();
+            case Meter: return amount.multiply(BigDecimal.valueOf(1000)).intValue();
+            case Kilometer: return amount.multiply(BigDecimal.valueOf(1000000)).intValue();
+            default: throw new IllegalArgumentException("Illegal distance unit: " + unit.name());
         }
     }
-    class NamedDistance extends AbstractDistance {
-        private final String name;
-        public static Distance getMarathon() {
-            return new NamedDistance(42.195, "Marathon");
-        }
-        public static Distance getHalfMarathon() {
-            return new NamedDistance(21.0975, "1/2 Marathon");
-        }
-        public NamedDistance(double distance, String name) {
-            super(distance);
-            this.name = name;
-        }
 
-        @Override
-        public String toString() {
+    public boolean greaterThan(Distance arg) {
+        return (this.compareTo(arg) > 0);
+    }
+
+    public boolean lessThan(Distance arg) {
+        return (this.compareTo(arg) < 0);
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if(obj == null) return false;
+        if (!(obj instanceof Distance)) return false;
+        Distance other = (Distance) obj;
+        return other.unit == this.unit && other.amount.equals(this.amount);
+    }
+
+    @Override
+    public int compareTo(Distance o) {
+        return Integer.compare(getMillimeters(), o.getMillimeters());
+    }
+
+    @Override
+    public String toString() {
+        if (name != null) {
             return name;
+        } else {
+            return defaultFormatter.format(amount);
+        }
+    }
+
+    public double divide(Distance distance) {
+        if (this.unit == distance.unit) {
+            return this.amount.divide(distance.amount, MathContext.DECIMAL64).doubleValue();
+        } else {
+            return BigDecimal.valueOf(getMillimeters()).divide(BigDecimal.valueOf(distance.getMillimeters()), MathContext.DECIMAL64).doubleValue();
         }
     }
 }

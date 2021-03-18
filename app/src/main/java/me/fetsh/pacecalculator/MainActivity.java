@@ -41,19 +41,19 @@ public class MainActivity extends AppCompatActivity {
     private void onDataCalculated(Calculator calculator) {
         mPaceInput.setPace(calculator.getPace());
         mSpeedInput.setText(calculator.getSpeed().toString());
-        ((TextView) findViewById(R.id.speed_header_postfix)).setText(UnitSystemUtils.getSpeedHeader(calculator.getSpeed().getUnitSystem()));
+        ((TextView) findViewById(R.id.speed_header_postfix)).setText(calculator.getSpeed().getDistance().toString());
         mDistanceInput.setText(calculator.getDistance().toString());
         mTimeInput.setTime(calculator.getTime());
 
         // TODO: Get distances from calculator
         mAdapter.setPace(calculator.getPace());
-        mAdapter.setDistances(Distance.all());
+        mAdapter.setDistances(Distance.all(new Distance(0, calculator.getPace().getDistance().getUnit()), calculator.getDistance(), calculator.getPace().getDistance()));
         mAdapter.notifyDataSetChanged();
     }
 
     private void onPaceSet(Pace pace) {
         calc.calculateWith(pace);
     }
-    private void onTimeSet(Pace time) { calc.calculateWithTime(time);    }
+    private void onTimeSet(Time time) { calc.calculateWithTime(time);    }
 
 }

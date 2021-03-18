@@ -4,14 +4,14 @@ import androidx.annotation.NonNull;
 
 public class Calculator {
 
-    private static final Pace INIT_PACE = Pace.metric(4, 30);
-    private static final Distance INIT_DISTANCE = Distance.NamedDistance.getMarathon();
+    private static final Pace INIT_PACE = new Pace(new Time(4, 30), new Distance(1, DistanceUnit.Kilometer, "km"));
+    private static final Distance INIT_DISTANCE = Distance.marathon();
     private final OnDataCalculatedListener listener;
 
     private Pace pace;
     private Speed speed;
     private Distance distance;
-    private Pace time;
+    private Time time;
 
     public Calculator(@NonNull OnDataCalculatedListener listener) {
         this.listener = listener;
@@ -22,13 +22,13 @@ public class Calculator {
     public void calculateWith(Pace pace){
         this.pace = pace;
         this.speed = Speed.fromPace(pace);
-        this.time = pace.multipliedBy(distance.getDistance());
+        this.time = pace.getTime(distance);
         notifyListener();
     }
-    public void calculateWithTime(Pace time) {
-        this.pace = time.dividedBy(distance.getDistance());
-        this.speed = Speed.fromPace(pace);
-        this.time = pace.multipliedBy(distance.getDistance());
+    public void calculateWithTime(Time time) {
+        pace = new Pace(time.divide(distance.divide(pace.getDistance())), pace.getDistance());
+        speed = Speed.fromPace(pace);
+        this.time = pace.getTime(distance);
         notifyListener();
     }
 
@@ -48,7 +48,7 @@ public class Calculator {
         return distance;
     }
 
-    public Pace getTime() {
+    public Time getTime() {
         return time;
     }
 

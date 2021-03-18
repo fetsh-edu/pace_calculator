@@ -4,15 +4,15 @@ import java.util.Locale;
 
 public class Speed {
     private final double speed;
-    private final UnitSystem unitSystem;
+    private final Distance distance;
 
-    public Speed(double speed, UnitSystem unitSystem) {
+    public Speed(double speed, Distance distance) {
         this.speed = speed;
-        this.unitSystem = unitSystem;
+        this.distance = distance;
     }
 
     public static Speed fromPace(Pace pace) {
-        return new Speed(60d/(pace.getMinutesPart()*60+pace.getSecondsPart())*60, pace.getUnitSystem());
+        return new Speed(60d/(pace.getMinutesPart()*60+pace.getSecondsPart())*60, pace.getDistance());
     }
 
     @Override
@@ -20,7 +20,7 @@ public class Speed {
         return String.format(Locale.US,"%.2f", speed);
     }
 
-    public UnitSystem getUnitSystem() {
-        return unitSystem;
+    public Distance getDistance() {
+        return distance;
     }
 }

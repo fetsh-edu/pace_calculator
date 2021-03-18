@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 
 public class TimePicker extends AlertDialog {
     public interface OnTimeSetListener {
-        void onTimeSet(Pace pace);
+        void onTimeSet(Time time);
     }
     private final OnTimeSetListener onTimeSetListener;
 
@@ -47,10 +47,10 @@ public class TimePicker extends AlertDialog {
     }
 
 
-    public void setTime(Pace pace) {
-        setHours(pace.getHours());
-        setMinutes(pace.getMinutesPart());
-        setSeconds(pace.getSecondsPart());
+    public void setTime(Time time) {
+        setHours(time.getHours());
+        setMinutes(time.getMinutesPart());
+        setSeconds(time.getSecondsPart());
     }
 
     public void setHours(int hours) {
@@ -74,6 +74,6 @@ public class TimePicker extends AlertDialog {
         minutesPicker.clearFocus();
         secondsPicker.clearFocus();
 
-        onTimeSetListener.onTimeSet(Pace.time(hoursPicker.getValue(), minutesPicker.getValue(), secondsPicker.getValue()));
+        onTimeSetListener.onTimeSet(new Time(hoursPicker.getValue(), minutesPicker.getValue(), secondsPicker.getValue()));
     }
 }

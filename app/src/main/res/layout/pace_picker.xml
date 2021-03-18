@@ -20,6 +20,11 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="/"/>
     <NumberPicker
         android:id="@+id/unit_system"
         android:layout_width="wrap_content"

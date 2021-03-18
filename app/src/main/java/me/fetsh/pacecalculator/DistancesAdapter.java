@@ -70,21 +70,21 @@ public class DistancesAdapter extends RecyclerView.Adapter<DistancesAdapter.View
             holder.itemView.setBackgroundResource(R.color.lightestGray);
         }
 
-        if (distance.getDistance() == 0) {
+        if (distance.getAmount() == 0) {
             distanceTV.setText(R.string.distance);
             timeTV.setText(R.string.time);
         } else {
             distanceTV.setText(distance.toString());
-            timeTV.setText(mPace.multipliedBy(distance.getDistance()).toString());
+            timeTV.setText(mPace.getTime(distance).toString());
         }
     }
 
     private boolean distanceIsImportant(Distance distance) {
-        return distance instanceof Distance.NamedDistance || distance.getDistance() == 0;
+        return distance.getName() != null || distance.getAmount() == 0;
     }
 
     private boolean distanceIsSemiImportant(Distance distance) {
-        return (int) distance.getDistance() % 5 == 0;
+        return (int) distance.getAmount() % 5 == 0;
     }
 
     @Override

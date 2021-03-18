@@ -42,7 +42,7 @@ public class PaceInput extends ConstraintLayout implements View.OnClickListener 
     public void setPace(Pace pace) {
         this.pace = pace;
         mPaceInput.setText(pace.toString());
-        mPacePostfix.setText(getContext().getText(UnitSystemUtils.getPaceHeader(pace.getUnitSystem())));
+        mPacePostfix.setText(pace.getDistance().toString());
     }
 
     public Pace getPace() {

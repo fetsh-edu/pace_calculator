@@ -12,7 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class TimeInput extends ConstraintLayout implements View.OnClickListener {
     private final TextView mTimeInput;
-    private Pace time;
+    private Time time;
     private TimePicker.OnTimeSetListener onTimeSetListener;
 
     public TimeInput(@NonNull Context context) {
@@ -35,9 +35,9 @@ public class TimeInput extends ConstraintLayout implements View.OnClickListener 
         setOnClickListener(this);
     }
 
-    public void setTime(Pace pace) {
-        this.time = pace;
-        mTimeInput.setText(pace.toString());
+    public void setTime(Time time) {
+        this.time = time;
+        mTimeInput.setText(time.toString());
     }
 
     @Override
