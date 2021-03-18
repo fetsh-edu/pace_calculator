@@ -5,12 +5,12 @@ import androidx.annotation.NonNull;
 public class Calculator {
 
     private static final Pace INIT_PACE = Pace.metric(4, 30);
-    private static final String INIT_DISTANCE = "Marathon";
+    private static final Distance INIT_DISTANCE = Distance.NamedDistance.getMarathon();
     private final OnDataCalculatedListener listener;
 
     private Pace pace;
     private Speed speed;
-    private String distance;
+    private Distance distance;
     private Pace time;
 
     public Calculator(@NonNull OnDataCalculatedListener listener) {
@@ -22,7 +22,13 @@ public class Calculator {
     public void calculateWith(Pace pace){
         this.pace = pace;
         this.speed = Speed.fromPace(pace);
-        this.time = pace.multipliedBy(Distance.NamedDistance.getMarathon().getDistance());
+        this.time = pace.multipliedBy(distance.getDistance());
+        notifyListener();
+    }
+    public void calculateWithTime(Pace time) {
+        this.pace = time.dividedBy(distance.getDistance());
+        this.speed = Speed.fromPace(pace);
+        this.time = pace.multipliedBy(distance.getDistance());
         notifyListener();
     }
 
@@ -38,11 +44,12 @@ public class Calculator {
         return speed;
     }
 
-    public String getDistance() {
+    public Distance getDistance() {
         return distance;
     }
 
     public Pace getTime() {
         return time;
     }
+
 }

@@ -23,7 +23,12 @@ public interface Pace {
         return new ImperialPace(sec);
     }
 
+    static Pace time(int hours, int min, int sec) {
+        return new MetricPace(hours*60*60 + min*60 + sec);
+    }
+
     Pace multipliedBy(double distance);
+    Pace dividedBy(double distance);
 
     default int getMinutes() {
         return getSeconds() / 60;
@@ -43,7 +48,6 @@ public interface Pace {
     int getSeconds();
 
     UnitSystem getUnitSystem();
-
 
     abstract class AbstractPace implements Pace {
         private final int seconds;
@@ -87,8 +91,14 @@ public interface Pace {
         public MetricPace(int seconds) {
             super(seconds);
         }
+
         public Pace multipliedBy(double multiplicand) {
             return new MetricPace((int) Math.ceil(getSeconds() * multiplicand));
+        }
+
+        @Override
+        public Pace dividedBy(double distance) {
+            return new MetricPace((int) Math.round(getSeconds() / distance) );
         }
 
         @Override
@@ -107,8 +117,14 @@ public interface Pace {
             super(seconds);
         }
 
+        @Override
         public Pace multipliedBy(double multiplicand) {
             return new ImperialPace((int) Math.ceil(getSeconds() * multiplicand));
+        }
+
+        @Override
+        public Pace dividedBy(double distance) {
+            return new ImperialPace((int) Math.round(getSeconds() / distance) );
         }
 
         @Override

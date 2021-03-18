@@ -1,6 +1,7 @@
 package me.fetsh.pacecalculator;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,15 +54,37 @@ public class DistancesAdapter extends RecyclerView.Adapter<DistancesAdapter.View
         Distance distance = mDistances.get(position);
 
         TextView distanceTV = holder.distanceView;
-        distanceTV.setText(distance.toString());
-
         TextView timeTV = holder.timeView;
-        timeTV.setText(mPace.multipliedBy(distance.getDistance()).toString());
-        if ((int) distance.getDistance() % 5 == 0) {
+
+        if (distanceIsImportant(distance)) {
+            distanceTV.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            timeTV.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            holder.itemView.setBackgroundResource(R.color.lightGray);
+        } else if (distanceIsSemiImportant(distance)) {
+            distanceTV.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+            timeTV.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
             holder.itemView.setBackgroundResource(R.color.lightGray);
         } else {
+            distanceTV.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+            timeTV.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
             holder.itemView.setBackgroundResource(R.color.lightestGray);
         }
+
+        if (distance.getDistance() == 0) {
+            distanceTV.setText(R.string.distance);
+            timeTV.setText(R.string.time);
+        } else {
+            distanceTV.setText(distance.toString());
+            timeTV.setText(mPace.multipliedBy(distance.getDistance()).toString());
+        }
+    }
+
+    private boolean distanceIsImportant(Distance distance) {
+        return distance instanceof Distance.NamedDistance || distance.getDistance() == 0;
+    }
+
+    private boolean distanceIsSemiImportant(Distance distance) {
+        return (int) distance.getDistance() % 5 == 0;
     }
 
     @Override
@@ -75,7 +99,7 @@ public class DistancesAdapter extends RecyclerView.Adapter<DistancesAdapter.View
         // for any view that will be set as you render a row
         public TextView distanceView;
         public TextView timeView;
-        public LinearLayout parentView;
+        public ConstraintLayout parentView;
 
 
         // We also create a constructor that accepts the entire item row

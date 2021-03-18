@@ -42,6 +42,7 @@ public class PacePicker extends AlertDialog {
         minutesPicker.setMaxValue(10);
         secondsPicker.setMinValue(0);
         secondsPicker.setMaxValue(59);
+        secondsPicker.setFormatter(s -> String.format("%02d", s));
         final String[] values = Arrays.stream(UnitSystem.values()).map(UnitSystem::name).toArray(String[]::new);
         unitSystemPicker.setMinValue(0);
         unitSystemPicker.setMaxValue(values.length - 1);
@@ -73,6 +74,8 @@ public class PacePicker extends AlertDialog {
 
     private void onPositiveButton(DialogInterface dialogInterface, int i) {
         if (onPaceSetListener == null) return;
+        minutesPicker.clearFocus();
+        secondsPicker.clearFocus();
 
         onPaceSetListener.onPaceSet(Pace.withUnitSystem(UnitSystem.values()[unitSystemPicker.getValue()], minutesPicker.getValue(), secondsPicker.getValue()));
     }

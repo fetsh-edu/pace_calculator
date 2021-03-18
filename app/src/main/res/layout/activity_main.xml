@@ -39,7 +39,7 @@
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <me.fetsh.pacecalculator.TimeInput
         android:id="@+id/time_picker"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -48,27 +48,7 @@
         app:layout_constraintBottom_toTopOf="@id/pace_picker"
         app:layout_constraintRight_toRightOf="parent"
         android:background="?android:attr/selectableItemBackground"
-        android:paddingTop="10dp">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/time_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:text="@string/time"
-            style="@style/pace_speed_header"
-            />
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/time_input"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/time_header"
-            app:layout_constraintLeft_toLeftOf="parent"
-            style="@style/pace_speed_input"
-            tools:text="04:45"
-            />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:paddingTop="10dp" />
 
     <View
         android:layout_width="match_parent"

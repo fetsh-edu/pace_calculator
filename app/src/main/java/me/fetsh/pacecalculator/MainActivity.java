@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
 
     private PaceInput mPaceInput;
     private TextView mSpeedInput;
-    private TextView mTimeInput;
+    private TimeInput mTimeInput;
     private TextView mDistanceInput;
 
     private final DistancesAdapter mAdapter = new DistancesAdapter();
@@ -26,11 +26,12 @@ public class MainActivity extends AppCompatActivity {
         mPaceInput = findViewById(R.id.pace_picker);
         mSpeedInput = findViewById(R.id.speed_input);
         mDistanceInput = findViewById(R.id.distance_input);
-        mTimeInput = findViewById(R.id.time_input);
+        mTimeInput = findViewById(R.id.time_picker);
 
         calc = new Calculator(this::onDataCalculated);
 
         mPaceInput.setOnPaceSetListener(this::onPaceSet);
+        mTimeInput.setOnTimeSetListener(this::onTimeSet);
 
         RecyclerView rvDistances = findViewById(R.id.distance_table);
         rvDistances.setAdapter(mAdapter);
@@ -41,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
         mPaceInput.setPace(calculator.getPace());
         mSpeedInput.setText(calculator.getSpeed().toString());
         ((TextView) findViewById(R.id.speed_header_postfix)).setText(UnitSystemUtils.getSpeedHeader(calculator.getSpeed().getUnitSystem()));
-        mDistanceInput.setText(calculator.getDistance());
-        mTimeInput.setText(calculator.getTime().toString());
+        mDistanceInput.setText(calculator.getDistance().toString());
+        mTimeInput.setTime(calculator.getTime());
 
         // TODO: Get distances from calculator
         mAdapter.setPace(calculator.getPace());
@@ -53,4 +54,6 @@ public class MainActivity extends AppCompatActivity {
     private void onPaceSet(Pace pace) {
         calc.calculateWith(pace);
     }
+    private void onTimeSet(Pace time) { calc.calculateWithTime(time);    }
+
 }
