@@ -31,7 +31,12 @@ public class Calculator {
         this.time = pace.getTime(distance);
         notifyListener();
     }
-
+    public void calculateWithSpeed(Speed speed) {
+        this.speed = speed;
+        pace = new Pace(new Time((int) Math.round(3600d / speed.getSpeed())), speed.getDistance());
+        this.time = pace.getTime(distance);
+        notifyListener();
+    }
     private void notifyListener() {
         listener.onDataCalculated(this);
     }
@@ -51,5 +56,4 @@ public class Calculator {
     public Time getTime() {
         return time;
     }
-
 }

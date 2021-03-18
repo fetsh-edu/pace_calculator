@@ -36,8 +36,8 @@ public class TimePicker extends AlertDialog {
         minutesPicker = rootPickerView.findViewById(R.id.time_minutes);
         secondsPicker = rootPickerView.findViewById(R.id.time_seconds);
 
-        hoursPicker.setMinValue(2);
-        hoursPicker.setMaxValue(10);
+        hoursPicker.setMinValue(0);
+        hoursPicker.setMaxValue(23);
         minutesPicker.setMinValue(0);
         minutesPicker.setMaxValue(59);
         minutesPicker.setFormatter(s -> String.format("%02d", s));

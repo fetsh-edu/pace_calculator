@@ -56,7 +56,7 @@
         app:layout_constraintTop_toBottomOf="@id/distance_picker"
         android:background="@color/lightGray" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <me.fetsh.pacecalculator.SpeedInput
         android:id="@+id/speed_picker"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -64,39 +64,9 @@
         app:layout_constraintTop_toBottomOf="@id/distance_picker"
         app:layout_constraintRight_toLeftOf="@id/pace_picker"
         app:layout_constraintBottom_toTopOf="@id/distance_table"
+        android:background="?android:attr/selectableItemBackground"
         android:paddingTop="10dp"
-        android:paddingBottom="5dp">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/speed_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:text="@string/speed"
-            style="@style/pace_speed_header"
-            />
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/speed_header_postfix"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toRightOf="@id/speed_header"
-            app:layout_constraintBottom_toBottomOf="@id/speed_header"
-            android:text="@string/speed_postfix"
-            style="@style/pace_speed_header_postfix"
-            />
-
-        <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/speed_input"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/speed_header"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:background="?android:attr/selectableItemBackground"
-                style="@style/pace_speed_input"
-                tools:text="14.0"
-                />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:paddingBottom="5dp" />
 
     <me.fetsh.pacecalculator.PaceInput
         android:id="@+id/pace_picker"
@@ -109,8 +79,6 @@
         android:background="?android:attr/selectableItemBackground"
         android:paddingTop="10dp"
         android:paddingBottom="5dp" />
-
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/distance_table"

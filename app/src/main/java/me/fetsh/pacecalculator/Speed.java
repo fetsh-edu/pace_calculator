@@ -23,4 +23,8 @@ public class Speed {
     public Distance getDistance() {
         return distance;
     }
+
+    public double getSpeed() {
+        return speed;
+    }
 }
