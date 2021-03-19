@@ -37,6 +37,7 @@ public class PacePicker extends AlertDialog {
         setView(rootPickerView);
         setButton(BUTTON_POSITIVE, context.getString(R.string.ok), this::onPositiveButton);
         setButton(BUTTON_NEGATIVE, context.getString(R.string.cancel), this::onNegativeButton);
+        setTitle(R.string.set_pace);
 
         minutesPicker = rootPickerView.findViewById(R.id.minutes);
         secondsPicker = rootPickerView.findViewById(R.id.seconds);

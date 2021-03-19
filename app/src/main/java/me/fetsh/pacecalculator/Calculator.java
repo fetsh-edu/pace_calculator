@@ -37,6 +37,12 @@ public class Calculator {
         this.time = pace.getTime(distance);
         notifyListener();
     }
+    public void calculateWithDistance(Distance distance) {
+        this.distance = distance;
+        this.time = pace.getTime(distance);
+        notifyListener();
+    }
+
     private void notifyListener() {
         listener.onDataCalculated(this);
     }

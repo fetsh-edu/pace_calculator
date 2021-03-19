@@ -71,7 +71,9 @@ public class DistancesAdapter extends RecyclerView.Adapter<DistancesAdapter.View
         }
 
         if (distance.getAmount() == 0) {
+            Distance step = mDistances.get(1);
             distanceTV.setText(R.string.distance);
+            distanceTV.append(" (" + step.getPostfixString() + ")");
             timeTV.setText(R.string.time);
         } else {
             distanceTV.setText(distance.toString());

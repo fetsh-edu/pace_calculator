@@ -31,6 +31,7 @@ public class TimePicker extends AlertDialog {
         setView(rootPickerView);
         setButton(BUTTON_POSITIVE, context.getString(R.string.ok), this::onPositiveButton);
         setButton(BUTTON_NEGATIVE, context.getString(R.string.cancel), this::onNegativeButton);
+        setTitle(R.string.set_time);
 
         hoursPicker = rootPickerView.findViewById(R.id.time_hours);
         minutesPicker = rootPickerView.findViewById(R.id.time_minutes);

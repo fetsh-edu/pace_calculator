@@ -12,4 +12,7 @@
     <string name="min_per_mile">min/mile</string>
     <string name="km_per_hour">km/h</string>
     <string name="miles_per_hour">mph</string>
+    <string name="set_pace">Set pace</string>
+    <string name="set_speed">Set speed</string>
+    <string name="set_time">Set time</string>
 </resources>

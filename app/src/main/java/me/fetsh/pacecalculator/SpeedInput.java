@@ -41,7 +41,7 @@ public class SpeedInput extends ConstraintLayout implements View.OnClickListener
     public void setSpeed(Speed speed) {
         this.speed = speed;
         mSpeedInput.setText(speed.toString());
-        mSpeedPostfix.setText(speed.getDistance().toString());
+        mSpeedPostfix.setText(speed.getPostfixString());
     }
 
     @Override

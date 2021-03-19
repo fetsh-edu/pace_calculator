@@ -50,6 +50,16 @@ public class Distance implements Comparable<Distance> {
         }
     }
 
+    static List<Distance> allNamed() {
+        ArrayList<Distance> distances = new ArrayList<>();
+        distances.add(new Distance(5, DistanceUnit.Kilometer, "5 km"));
+        distances.add(new Distance(10, DistanceUnit.Kilometer, "10 km"));
+        distances.add(new Distance(10, DistanceUnit.Mile, "10 miles"));
+        distances.add(Distance.halfMarathon());
+        distances.add(Distance.marathon());
+        return distances;
+    }
+
     static List<Distance> all(Distance start, Distance cap, Distance step) {
         ArrayList<Distance> distances = new ArrayList<>();
         for (
@@ -68,6 +78,9 @@ public class Distance implements Comparable<Distance> {
 
     public double getAmount() {
         return amount.doubleValue();
+    }
+    public Distance setAmount(double amount) {
+        return new Distance(amount, unit);
     }
 
     public String getName() {
@@ -134,6 +147,14 @@ public class Distance implements Comparable<Distance> {
             return this.amount.divide(distance.amount, MathContext.DECIMAL64).doubleValue();
         } else {
             return BigDecimal.valueOf(getMillimeters()).divide(BigDecimal.valueOf(distance.getMillimeters()), MathContext.DECIMAL64).doubleValue();
+        }
+    }
+
+    public String getPostfixString() {
+        if (getAmount() == 1) {
+            return getUnit().getShortName();
+        } else {
+            return "" + getAmount() + " " + getUnit().getShortName();
         }
     }
 }
