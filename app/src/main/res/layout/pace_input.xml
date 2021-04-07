@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="0dp"
     android:layout_height="wrap_content">
 
@@ -30,6 +31,7 @@
         app:layout_constraintTop_toBottomOf="@id/pace_header"
         app:layout_constraintLeft_toLeftOf="parent"
         style="@style/pace_speed_input"
+        tools:text="4.30"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

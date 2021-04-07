@@ -1,6 +1,9 @@
 package me.fetsh.pacecalculator;
 
-public class Time {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Time implements Parcelable {
     private final int seconds;
 
     public Time(int hours, int min, int sec) {
@@ -14,6 +17,7 @@ public class Time {
     public Time(int seconds) {
         this.seconds = seconds;
     }
+
     public int getMinutes() {
         return getSeconds() / 60;
     }
@@ -45,5 +49,31 @@ public class Time {
         } else {
             return String.format("%d:%02d", minutes, lSeconds);
         }
+    }
+
+    protected Time(Parcel in) {
+        seconds = in.readInt();
+    }
+
+    public static final Creator<Time> CREATOR = new Creator<Time>() {
+        @Override
+        public Time createFromParcel(Parcel in) {
+            return new Time(in);
+        }
+
+        @Override
+        public Time[] newArray(int size) {
+            return new Time[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(seconds);
     }
 }

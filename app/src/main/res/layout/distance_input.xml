@@ -23,7 +23,7 @@
             app:layout_constraintTop_toBottomOf="@id/distance_header"
             app:layout_constraintLeft_toLeftOf="parent"
             style="@style/pace_speed_input"
-            tools:text="14.0"
+            tools:text="Marathon"
             />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

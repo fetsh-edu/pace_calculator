@@ -1,5 +1,8 @@
 package me.fetsh.pacecalculator;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -12,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-public class Distance implements Comparable<Distance> {
+public class Distance implements Comparable<Distance>, Parcelable {
 
     private final BigDecimal amount;
     private final DistanceUnit unit;
@@ -156,5 +159,35 @@ public class Distance implements Comparable<Distance> {
         } else {
             return "" + getAmount() + " " + getUnit().getShortName();
         }
+    }
+
+    protected Distance(Parcel in) {
+        amount = BigDecimal.valueOf(in.readDouble());
+        unit = DistanceUnit.valueOf(in.readString());
+        name = in.readString();
+    }
+
+    public static final Creator<Distance> CREATOR = new Creator<Distance>() {
+        @Override
+        public Distance createFromParcel(Parcel in) {
+            return new Distance(in);
+        }
+
+        @Override
+        public Distance[] newArray(int size) {
+            return new Distance[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(amount.doubleValue());
+        dest.writeString(unit.toString());
+        dest.writeString(name);
     }
 }

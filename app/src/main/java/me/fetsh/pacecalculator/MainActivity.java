@@ -1,15 +1,19 @@
 package me.fetsh.pacecalculator;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Calculator calc;
+    private CalculatorDataVM mCalcDataVM;
 
     private PaceInput mPaceInput;
     private SpeedInput mSpeedInput;
@@ -22,44 +26,50 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        SharedPreferences preferences = getSharedPreferences("RunningCalc", MODE_PRIVATE);
+        ViewModelProvider.Factory factory = new ViewModelProvider.Factory() {
+            @NonNull
+            @Override
+            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+                return (T) new CalculatorDataVM(preferences);
+            }
+        };
+
+        mCalcDataVM = new ViewModelProvider(this, factory).get(CalculatorDataVM.class);
 
         mPaceInput = findViewById(R.id.pace_picker);
         mSpeedInput = findViewById(R.id.speed_picker);
         mDistanceInput = findViewById(R.id.distance_picker);
         mTimeInput = findViewById(R.id.time_picker);
 
-        calc = new Calculator(this::onDataCalculated);
-
-        mPaceInput.setOnPaceSetListener(this::onPaceSet);
-        mTimeInput.setOnTimeSetListener(this::onTimeSet);
-        mSpeedInput.setOnSpeedSetListener(this::onSpeedSet);
-        mDistanceInput.setOnDistanceSetListener(this::onDistanceSet);
+        mPaceInput.setOnPaceSetListener(pace -> mCalcDataVM.setPace(pace));
+        mDistanceInput.setOnDistanceSetListener(distance -> mCalcDataVM.setDistance(distance));
+        mTimeInput.setOnTimeSetListener(time -> mCalcDataVM.setTime(time));
+        mSpeedInput.setOnSpeedSetListener(speed -> mCalcDataVM.setSpeed(speed));
 
         RecyclerView rvDistances = findViewById(R.id.distance_table);
         rvDistances.setAdapter(mAdapter);
         rvDistances.setLayoutManager(new LinearLayoutManager(this));
+
+
+        mCalcDataVM.getPace().observe(this, pace -> {
+            mPaceInput.setPace(pace);
+        });
+        mCalcDataVM.getSpeed().observe(this, speed -> {
+            mSpeedInput.setSpeed(speed);
+        });
+        mCalcDataVM.getDistance().observe(this, distance -> {
+            mDistanceInput.setDistance(distance);
+        });
+        mCalcDataVM.getTime().observe(this, time -> {
+            mTimeInput.setTime(time);
+        });
+        mCalcDataVM.getSplits().observe(this, splits -> {
+            mAdapter.setPace(mCalcDataVM.getPace().getValue());
+            mAdapter.setDistances(splits);
+            mAdapter.notifyDataSetChanged();
+        });
     }
-
-    private void onDataCalculated(Calculator calculator) {
-        mPaceInput.setPace(calculator.getPace());
-        mSpeedInput.setSpeed(calculator.getSpeed());
-        mDistanceInput.setDistance(calculator.getDistance());
-        mTimeInput.setTime(calculator.getTime());
-
-        // TODO: Get distances from calculator
-        mAdapter.setPace(calculator.getPace());
-        mAdapter.setDistances(Distance.all(new Distance(0, calculator.getPace().getDistance().getUnit()), calculator.getDistance(), calculator.getPace().getDistance()));
-        mAdapter.notifyDataSetChanged();
-    }
-
-    private void onPaceSet(Pace pace) {
-        calc.calculateWith(pace);
-    }
-    private void onTimeSet(Time time) { calc.calculateWithTime(time);}
-    private void onSpeedSet(Speed speed) { calc.calculateWithSpeed(speed);}
-    private void onDistanceSet(Distance distance) { calc.calculateWithDistance(distance);}
-
 }
