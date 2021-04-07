@@ -5,12 +5,10 @@ import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -56,7 +54,7 @@ public class DistancesAdapter extends RecyclerView.Adapter<DistancesAdapter.View
         TextView distanceTV = holder.distanceView;
         TextView timeTV = holder.timeView;
 
-        if (distanceIsImportant(distance)) {
+        if (distanceIsImportant(distance) || position == mDistances.size() - 1) {
             distanceTV.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
             timeTV.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
             holder.itemView.setBackgroundResource(R.color.lightGray);
@@ -73,10 +71,14 @@ public class DistancesAdapter extends RecyclerView.Adapter<DistancesAdapter.View
         if (distance.getAmount() == 0) {
             Distance step = mDistances.get(1);
             distanceTV.setText(R.string.distance);
-            distanceTV.append(" (" + step.getPostfixString() + ")");
+            distanceTV.append(" (" + step.getSplitDistanceHeader() + ")");
             timeTV.setText(R.string.time);
         } else {
-            distanceTV.setText(distance.toString());
+            if (position == mDistances.size() - 1) {
+                distanceTV.setText(distance.getFullName());
+            } else {
+                distanceTV.setText(distance.toString());
+            }
             timeTV.setText(mPace.getTime(distance).toString());
         }
     }

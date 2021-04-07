@@ -54,7 +54,7 @@ public class SpeedPicker extends AlertDialog {
 
         final String[] values = Arrays.stream(distances).map(Distance::toString).toArray(String[]::new);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, values);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner_item_text, values);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         distanceSpinner.setAdapter(adapter);
     }

@@ -25,7 +25,7 @@ public class Distance implements Comparable<Distance>, Parcelable {
 
     static {
         defaultFormatter = new DecimalFormat("#.#", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-        defaultFormatter.setMaximumFractionDigits(340);
+        defaultFormatter.setMaximumFractionDigits(4);
     }
 
     public Distance(double amount, DistanceUnit unit) {
@@ -145,19 +145,27 @@ public class Distance implements Comparable<Distance>, Parcelable {
         }
     }
 
+    public String getSplitDistanceHeader() {
+        if (getAmount() == 1) {
+            return getUnit().getShortName();
+        } else {
+            return "" + defaultFormatter.format(amount) + " " + getUnit().getShortName();
+        }
+    }
+
+    public String getFullName() {
+        if (name != null) {
+            return name;
+        } else {
+            return "" + defaultFormatter.format(amount) + " " + getUnit().getShortName();
+        }
+    }
+
     public double divide(Distance distance) {
         if (this.unit == distance.unit) {
             return this.amount.divide(distance.amount, MathContext.DECIMAL64).doubleValue();
         } else {
             return BigDecimal.valueOf(getMillimeters()).divide(BigDecimal.valueOf(distance.getMillimeters()), MathContext.DECIMAL64).doubleValue();
-        }
-    }
-
-    public String getPostfixString() {
-        if (getAmount() == 1) {
-            return getUnit().getShortName();
-        } else {
-            return "" + getAmount() + " " + getUnit().getShortName();
         }
     }
 

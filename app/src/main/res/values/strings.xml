@@ -15,4 +15,8 @@
     <string name="set_pace">Set pace</string>
     <string name="set_speed">Set speed</string>
     <string name="set_time">Set time</string>
+    <string name="options">Options</string>
+    <string name="change_split_size">Change split size</string>
+    <string name="custom_distance">Custom distance</string>
+    <string name="set_distance">Set distance</string>
 </resources>

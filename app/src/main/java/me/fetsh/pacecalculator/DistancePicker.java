@@ -1,0 +1,73 @@
+package me.fetsh.pacecalculator;
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+
+import androidx.annotation.NonNull;
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Arrays;
+import java.util.Locale;
+
+public class DistancePicker extends AlertDialog {
+
+    private static final DecimalFormat defaultFormatter;
+
+    static {
+        defaultFormatter = new DecimalFormat("#.#", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+        defaultFormatter.setMaximumFractionDigits(4);
+    }
+
+    private final EditText distanceInput;
+    private final Spinner distanceUnitSpinner;
+    private final DistanceInput.OnDistanceSetListener onDistanceSetListener;
+
+    public DistancePicker(@NonNull Context context, DistanceInput.OnDistanceSetListener onDistanceSetListener) {
+        super(context);
+        this.onDistanceSetListener = onDistanceSetListener;
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        final View rootPickerView = inflater.inflate(R.layout.distance_picker, null);
+        rootPickerView.setSaveFromParentEnabled(false);
+        setView(rootPickerView);
+        setButton(BUTTON_POSITIVE, context.getString(R.string.ok), this::onPositiveButton);
+        setButton(BUTTON_NEGATIVE, context.getString(R.string.cancel), this::onNegativeButton);
+        setTitle(R.string.set_distance);
+
+        distanceInput = rootPickerView.findViewById(R.id.distance_edit_text);
+        distanceUnitSpinner = rootPickerView.findViewById(R.id.distance_unit_spinner);
+
+        final String[] values = Arrays.stream(DistanceUnit.values()).map(DistanceUnit::getShortName).toArray(String[]::new);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner_item_text, values);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        distanceUnitSpinner.setAdapter(adapter);
+    }
+
+    public void setDistance(Distance distance) {
+        distanceInput.setText(defaultFormatter.format(distance.getAmount()));
+        setUnitSystem(distance.getUnit());
+    }
+
+    public void setUnitSystem(DistanceUnit unit) {
+        distanceUnitSpinner.setSelection(unit.ordinal());
+    }
+
+    private void onNegativeButton(DialogInterface dialogInterface, int i) {
+        cancel();
+    }
+
+    private void onPositiveButton(DialogInterface dialogInterface, int i) {
+        if (onDistanceSetListener == null) return;
+
+        onDistanceSetListener.onDistanceSet(
+                new Distance(Double.parseDouble(distanceInput.getText().toString()), DistanceUnit.values()[distanceUnitSpinner.getSelectedItemPosition()])
+        );
+    }
+}

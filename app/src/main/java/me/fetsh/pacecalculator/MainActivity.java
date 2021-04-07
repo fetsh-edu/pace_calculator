@@ -10,10 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
-    private CalculatorDataVM mCalcDataVM;
+    public CalculatorDataVM mCalcDataVM;
 
     private PaceInput mPaceInput;
     private SpeedInput mSpeedInput;
@@ -71,5 +73,19 @@ public class MainActivity extends AppCompatActivity {
             mAdapter.setDistances(splits);
             mAdapter.notifyDataSetChanged();
         });
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.options_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_change_split_size) {
+            android.util.Log.e("Calc", "Change pace");
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

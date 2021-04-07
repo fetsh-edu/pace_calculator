@@ -41,7 +41,7 @@ public class Pace implements Parcelable {
     public int getSeconds(){ return time.getSeconds(); }
 
     public String getPostfixString() {
-        String result = "min/" + distance.getPostfixString();
+        String result = "min/" + distance.getSplitDistanceHeader();
 
         return result;
     }

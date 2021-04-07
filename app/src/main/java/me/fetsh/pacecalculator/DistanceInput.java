@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textview.MaterialTextView;
 
@@ -53,9 +54,16 @@ public class DistanceInput extends ConstraintLayout implements View.OnClickListe
         for (int i = 0; i < distances.size(); i++) {
             popupMenu.getMenu().add(Menu.NONE, i, i, distances.get(i).getName());
         }
+        popupMenu.getMenu().add(Menu.NONE, distances.size(), distances.size(), R.string.custom_distance);
         popupMenu.setOnMenuItemClickListener(item -> {
             if (onDistanceSetListener == null) return true;
-            onDistanceSetListener.onDistanceSet(distances.get(item.getItemId()));
+            if (item.getItemId() < distances.size()) {
+                onDistanceSetListener.onDistanceSet(distances.get(item.getItemId()));
+            } else {
+                DistancePicker distancePicker = new DistancePicker(getContext(), onDistanceSetListener);
+                distancePicker.setDistance(((MainActivity) getContext()).mCalcDataVM.getDistance().getValue());
+                distancePicker.show();
+            }
             return true;
         });
         popupMenu.show();
@@ -63,7 +71,7 @@ public class DistanceInput extends ConstraintLayout implements View.OnClickListe
 
     public void setDistance(Distance distance) {
         this.distance = distance;
-        mDistanceInput.setText(distance.toString());
+        mDistanceInput.setText(distance.getFullName());
 
     }
 
