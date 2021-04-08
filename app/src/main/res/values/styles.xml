@@ -36,8 +36,8 @@
     </style>
     <style name="SpinnerTextViewItem">
         <item name="android:minWidth">70dp</item>
-        <item name="android:paddingStart">15dp</item>
-        <item name="android:paddingEnd">15dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">10dp</item>
     </style>
 
     <style name="split_table">
@@ -47,5 +47,9 @@
     <style name="split_row">
         <item name="android:textSize">13sp</item>
         <item name="android:textColor">@color/primaryTextColor</item>
+    </style>
+
+    <style name="before_spinner_edit_text">
+        <item name="android:textSize">20sp</item>
     </style>
 </resources>

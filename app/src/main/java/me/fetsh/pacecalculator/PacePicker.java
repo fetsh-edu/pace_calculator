@@ -10,6 +10,7 @@ import android.widget.NumberPicker;
 import androidx.annotation.NonNull;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 public class PacePicker extends AlertDialog {
 
@@ -39,6 +40,7 @@ public class PacePicker extends AlertDialog {
         setButton(BUTTON_NEGATIVE, context.getString(R.string.cancel), this::onNegativeButton);
         setTitle(R.string.set_pace);
 
+
         minutesPicker = rootPickerView.findViewById(R.id.minutes);
         secondsPicker = rootPickerView.findViewById(R.id.seconds);
         unitSystemPicker = rootPickerView.findViewById(R.id.unit_system);
@@ -46,13 +48,12 @@ public class PacePicker extends AlertDialog {
         minutesPicker.setMaxValue(10);
         secondsPicker.setMinValue(0);
         secondsPicker.setMaxValue(59);
-        secondsPicker.setFormatter(s -> String.format("%02d", s));
+        secondsPicker.setFormatter(s -> String.format(Locale.getDefault(), "%02d", s));
         final String[] values = Arrays.stream(distances).map(Distance::toString).toArray(String[]::new);
         unitSystemPicker.setMinValue(0);
         unitSystemPicker.setMaxValue(values.length - 1);
         unitSystemPicker.setDisplayedValues(values);
     }
-
 
     public void setPace(Pace pace) {
         setMinutes(pace.getMinutes());

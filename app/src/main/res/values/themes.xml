@@ -14,7 +14,6 @@
         <item name="android:timePickerStyle">@style/spinner_time_picker</item>
         <!-- Customize your theme here. -->
     </style>
-
     <style name="Theme.PaceCalculator.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
