@@ -63,6 +63,17 @@ public class Distance implements Comparable<Distance>, Parcelable {
         return distances;
     }
 
+    static List<Distance> splits() {
+        ArrayList<Distance> distances = new ArrayList<>();
+        distances.add(new Distance(200, DistanceUnit.Meter));
+        distances.add(new Distance(400, DistanceUnit.Meter));
+        distances.add(new Distance(1, DistanceUnit.Kilometer));
+        distances.add(new Distance(1, DistanceUnit.Mile));
+        distances.add(new Distance(5, DistanceUnit.Kilometer));
+        distances.add(new Distance(5, DistanceUnit.Mile));
+        return distances;
+    }
+
     static List<Distance> all(Distance start, Distance cap, Distance step) {
         ArrayList<Distance> distances = new ArrayList<>();
         for (

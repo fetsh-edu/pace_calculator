@@ -14,6 +14,7 @@ public class CalculatorDataVM extends ViewModel {
     private final SharedPreferences sharedPreferences;
 
     private SharedPreferencesData<Pace> pace;
+    private SharedPreferencesData<Distance> split;
     private SharedPreferencesData<Distance> distance;
     private final MutableLiveData<Speed> speed = new MutableLiveData<>();
     private final MutableLiveData<Time> time = new MutableLiveData<>();
@@ -25,9 +26,7 @@ public class CalculatorDataVM extends ViewModel {
 
     public LiveData<List<Distance>> getSplits() {
         if (splits.getValue() == null) {
-            splits.setValue(
-                    Distance.all(new Distance(0, getPace().getValue().getDistance().getUnit()), getDistance().getValue(), getPace().getValue().getDistance())
-            );
+            updateDistancesWithSplitOrPace(getSplit().getValue(), getPace().getValue().getDistance());
         }
         return splits;
     }
@@ -60,34 +59,79 @@ public class CalculatorDataVM extends ViewModel {
         return distance;
     }
 
-    void setPace(Pace pace) {
+    public LiveData<Distance> getSplit() {
+        if (split == null) {
+            split = new SharedSplit(sharedPreferences);
+        }
+        return split;
+    }
+
+    public void setPace(Pace pace) {
         sharedPreferences.edit().putString(SharedPace.PACE_KEY, new Gson().toJson(pace)).apply();
         speed.setValue(Speed.fromPace(pace));
         time.setValue(pace.getTime(getDistance().getValue()));
-        splits.setValue(Distance.all(new Distance(0, pace.getDistance().getUnit()), getDistance().getValue(), pace.getDistance()));
+        updateDistancesWithSplitOrPace(getSplit().getValue(), pace.getDistance());
     }
 
-    void setDistance(Distance distance) {
+    public void setDistance(Distance distance) {
         sharedPreferences.edit().putString(SharedDistance.DISTANCE_KEY, new Gson().toJson(distance)).apply();
         time.setValue(getPace().getValue().getTime(distance));
-        splits.setValue(Distance.all(new Distance(0, getPace().getValue().getDistance().getUnit()), getDistance().getValue(), getPace().getValue().getDistance()));
+        updateDistancesWithSplitOrPace(getSplit().getValue(), getPace().getValue().getDistance());
     }
 
-    void setTime(Time time) {
+    public void setTime(Time time) {
         Pace newPace = getPace().getValue().convertWithDistanceAndTime(getDistance().getValue(), time);
         sharedPreferences.edit().putString(SharedPace.PACE_KEY, new Gson().toJson(newPace)).apply();
         speed.setValue(Speed.fromPace(newPace));
         this.time.setValue(newPace.getTime(getDistance().getValue()));
-        splits.setValue(Distance.all(new Distance(0, newPace.getDistance().getUnit()), getDistance().getValue(), newPace.getDistance()));
+        updateDistancesWithSplitOrPace(getSplit().getValue(), newPace.getDistance());
     }
-    void setSpeed(Speed speed) {
+    public void setSpeed(Speed speed) {
         this.speed.setValue(speed);
         Pace newPace = new Pace(new Time((int) Math.round(3600d / speed.getSpeed())), speed.getDistance());
         sharedPreferences.edit().putString(SharedPace.PACE_KEY, new Gson().toJson(newPace)).apply();
         this.time.setValue(newPace.getTime(getDistance().getValue()));
-        splits.setValue(Distance.all(new Distance(0, newPace.getDistance().getUnit()), getDistance().getValue(), newPace.getDistance()));
+        updateDistancesWithSplitOrPace(getSplit().getValue(), newPace.getDistance());
     }
 
+    public void setSplit(Distance split) {
+        sharedPreferences.edit().putString(SharedSplit.SPLIT_KEY, new Gson().toJson(split)).apply();
+    }
+
+    public void updateDistancesWithSplit(Distance split) {
+        updateDistancesWithSplitOrPace(split, getPace().getValue().getDistance());
+    }
+
+    public void updateDistancesWithSplitOrPace(Distance split, Distance paceSplit) {
+        if (split == null) split = paceSplit;
+        splits.setValue(Distance.all(new Distance(0, split.getUnit()), getDistance().getValue(), split));
+    }
+
+    private Distance getSplitOr(Distance or){
+        Distance savedSplit = getSplit().getValue();
+        if (savedSplit != null) return savedSplit;
+        return or;
+    }
+
+    private static class SharedSplit extends SharedPreferencesData<Distance> {
+        private static final String SPLIT_KEY = "split_key";
+        public SharedSplit(SharedPreferences sharedPreferences) {
+            super(sharedPreferences, SPLIT_KEY, null);
+            super.setListener((_p, key) -> {
+                if (key.equals(SPLIT_KEY)) {
+                    setValue(new Gson().fromJson(getSharedPreferences().getString(getKey(), null), Distance.class));
+                }
+            });
+            setValueFromPrefOrDefault();
+        }
+        @Override
+        void setValueFromPrefOrDefault() {
+            Distance newValue = getSharedPreferences().contains(getKey())
+                    ? new Gson().fromJson(getSharedPreferences().getString(getKey(), null), Distance.class)
+                    : getDefaultValue();
+            setValue(newValue);
+        }
+    }
 
     private static class SharedDistance extends SharedPreferencesData<Distance> {
         private static final String DISTANCE_KEY = "distance_key";

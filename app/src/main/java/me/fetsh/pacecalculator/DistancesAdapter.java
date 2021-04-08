@@ -50,6 +50,7 @@ public class DistancesAdapter extends RecyclerView.Adapter<DistancesAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         Distance distance = mDistances.get(position);
+        Distance step = mDistances.get(1);
 
         TextView distanceTV = holder.distanceView;
         TextView timeTV = holder.timeView;
@@ -58,7 +59,7 @@ public class DistancesAdapter extends RecyclerView.Adapter<DistancesAdapter.View
             distanceTV.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
             timeTV.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
             holder.itemView.setBackgroundResource(R.color.lightGray);
-        } else if (distanceIsSemiImportant(distance)) {
+        } else if (distanceIsSemiImportant(distance, step)) {
             distanceTV.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
             timeTV.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
             holder.itemView.setBackgroundResource(R.color.lightGray);
@@ -69,7 +70,6 @@ public class DistancesAdapter extends RecyclerView.Adapter<DistancesAdapter.View
         }
 
         if (distance.getAmount() == 0) {
-            Distance step = mDistances.get(1);
             distanceTV.setText(R.string.distance);
             distanceTV.append(" (" + step.getSplitDistanceHeader() + ")");
             timeTV.setText(R.string.time);
@@ -87,8 +87,8 @@ public class DistancesAdapter extends RecyclerView.Adapter<DistancesAdapter.View
         return distance.getName() != null || distance.getAmount() == 0;
     }
 
-    private boolean distanceIsSemiImportant(Distance distance) {
-        return (int) distance.getAmount() % 5 == 0;
+    private boolean distanceIsSemiImportant(Distance distance, Distance step) {
+        return ((int) distance.getAmount()) % ((int) step.getAmount() * 5) == 0;
     }
 
     @Override

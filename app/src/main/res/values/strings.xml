@@ -19,4 +19,6 @@
     <string name="change_split_size">Change split size</string>
     <string name="custom_distance">Custom distance</string>
     <string name="set_distance">Set distance</string>
+    <string name="set_split">Set split size</string>
+    <string name="split_auto">Auto (based on pace)</string>
 </resources>

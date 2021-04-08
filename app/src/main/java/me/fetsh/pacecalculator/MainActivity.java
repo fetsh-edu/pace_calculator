@@ -1,6 +1,7 @@
 package me.fetsh.pacecalculator;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModel;
@@ -13,9 +14,18 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     public CalculatorDataVM mCalcDataVM;
+    private static final List<Distance> mSplits = Distance.splits();
+    private static final String[] mSplitPickerItems;
+    static {
+        String[] splitNames = mSplits.stream().map(Distance::getFullName).toArray(String[]::new);
+        mSplitPickerItems = new String[splitNames.length + 1];
+        System.arraycopy(splitNames, 0, mSplitPickerItems, 1, splitNames.length);
+    }
 
     private PaceInput mPaceInput;
     private SpeedInput mSpeedInput;
@@ -73,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
             mAdapter.setDistances(splits);
             mAdapter.notifyDataSetChanged();
         });
+        mCalcDataVM.getSplit().observe(this, split -> {
+            mCalcDataVM.updateDistancesWithSplit(split);
+        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -83,9 +96,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_change_split_size) {
-            android.util.Log.e("Calc", "Change pace");
+            showAlertDialog();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showAlertDialog() {
+        mSplitPickerItems[0] = getString(R.string.split_auto);
+        int checkedItem;
+        if (mCalcDataVM.getSplit().getValue() == null) {
+            checkedItem = 0;
+        } else {
+            checkedItem = mSplits.indexOf(mCalcDataVM.getSplit().getValue()) + 1;
+        }
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle(R.string.set_split)
+                .setSingleChoiceItems(mSplitPickerItems, checkedItem, (dialog, which) -> {
+                    if (which == 0) {
+                        mCalcDataVM.setSplit(null);
+                    } else {
+                        mCalcDataVM.setSplit(mSplits.get(which - 1));
+                    }
+                    dialog.cancel();
+                })
+                .create()
+                .show();
     }
 }
