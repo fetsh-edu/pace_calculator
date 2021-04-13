@@ -17,16 +17,16 @@ import java.util.Locale;
 
 public class Distance implements Comparable<Distance>, Parcelable {
 
-    private final BigDecimal amount;
-    private final DistanceUnit unit;
-    private String name;
-
     private static final DecimalFormat defaultFormatter;
-
     static {
         defaultFormatter = new DecimalFormat("#.#", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
         defaultFormatter.setMaximumFractionDigits(4);
     }
+    private final BigDecimal amount;
+    private final DistanceUnit unit;
+
+    private String name;
+
 
     public Distance(double amount, DistanceUnit unit) {
         this(amount, unit, null);
@@ -177,6 +177,14 @@ public class Distance implements Comparable<Distance>, Parcelable {
             return this.amount.divide(distance.amount, MathContext.DECIMAL64).doubleValue();
         } else {
             return BigDecimal.valueOf(getMillimeters()).divide(BigDecimal.valueOf(distance.getMillimeters()), MathContext.DECIMAL64).doubleValue();
+        }
+    }
+
+    public double remainder(Distance distance) {
+        if (this.unit == distance.unit) {
+            return this.amount.remainder(distance.amount, MathContext.DECIMAL64).doubleValue();
+        } else {
+            return getMillimeters() % distance.getMillimeters();
         }
     }
 

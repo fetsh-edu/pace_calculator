@@ -67,16 +67,25 @@ public class DistancesAdapter extends RecyclerView.Adapter<DistancesAdapter.View
             holder.itemView.setBackgroundResource(R.color.lightestGray);
         }
 
+        boolean isRegularStep = distance.remainder(step) < 0.000001d;
+
         if (distance.getAmount() == 0) {
             distanceTV.setText(R.string.distance);
             distanceTV.append(" (" + step.getSplitDistanceHeader() + ")");
             timeTV.setText(R.string.time);
         } else {
-            if (position == mDistances.size() - 1) {
-                distanceTV.setText(distance.getFullName());
+            String text;
+            if (step.getUnit() == DistanceUnit.Meter && isRegularStep) {
+                text = (int) distance.divide(step) + ": ";
             } else {
-                distanceTV.setText(distance.toString());
+                text = "";
             }
+            if (position == mDistances.size() - 1) {
+                text += distance.getFullName();
+            } else {
+                text += distance.toString();
+            }
+            distanceTV.setText(text);
             timeTV.setText(mPace.getTime(distance).toString());
         }
     }
@@ -101,7 +110,7 @@ public class DistancesAdapter extends RecyclerView.Adapter<DistancesAdapter.View
 
         public ViewHolder(View itemView) {
             super(itemView);
-            parentView = itemView.findViewById(R.id.parent);
+            parentView = itemView.findViewById(R.id.split_item_holder);
             distanceView = itemView.findViewById(R.id.distance);
             timeView = itemView.findViewById(R.id.time);
         }
