@@ -2,7 +2,7 @@
     <string name="app_name">Pace Calculator</string>
     <string name="pace">Pace</string>
     <string name="speed">Speed</string>
-    <string name="ok">Ok</string>
+    <string name="ok">@android:string/ok</string>
     <string name="cancel">Cancel</string>
     <string name="speed_postfix">km/h</string>
     <string name="pace_postfix">min/km</string>

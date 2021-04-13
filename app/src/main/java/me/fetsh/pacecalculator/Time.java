@@ -30,7 +30,7 @@ public class Time implements Parcelable {
     public int getSecondsPart() {
         return getSeconds() % 60;
     }
-    public int getSeconds(){ return seconds; };
+    public int getSeconds(){ return seconds; }
 
     public Time multiply(double multiplicand) {
         return new Time((int) Math.round(getSeconds() * multiplicand));
