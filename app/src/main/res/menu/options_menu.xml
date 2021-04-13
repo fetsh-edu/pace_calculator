@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
         android:id="@+id/empty"
         android:title="@string/options"
         android:orderInCategory="101"
         app:showAsAction="always"
         android:icon="@drawable/baseline_more_vert_white_24dp">
-
         <menu>
             <item android:id="@+id/action_change_split_size"
                 app:showAsAction="ifRoom"

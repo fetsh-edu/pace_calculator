@@ -19,4 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--printmapping build/outputs/mapping/release/mapping.txt
+#-printmapping build/outputs/mapping/release/mapping.txt
+-keep class me.fetsh.pacecalculator.DistanceUnit { *; }
+-keep class me.fetsh.pacecalculator.Distance { *; }
+-keep class me.fetsh.pacecalculator.Speed { *; }
+-keep class me.fetsh.pacecalculator.Pace { *; }
+-keep class me.fetsh.pacecalculator.Time { *; }

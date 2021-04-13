@@ -29,6 +29,16 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".MainActivity"
         >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/input_display"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/distance_table"
+            style="@style/general_input"
+            >
         <me.fetsh.pacecalculator.DistanceInput
             android:id="@+id/distance_picker"
             android:layout_width="0dp"
@@ -37,7 +47,7 @@
             app:layout_constraintBottom_toTopOf="@id/speed_picker"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toLeftOf="@id/time_picker"
-            android:background="?android:attr/selectableItemBackground"
+            android:background="@drawable/selectable_item_background"
             android:paddingTop="10dp" />
 
         <me.fetsh.pacecalculator.TimeInput
@@ -48,7 +58,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/pace_picker"
             app:layout_constraintRight_toRightOf="parent"
-            android:background="?android:attr/selectableItemBackground"
+            android:background="@drawable/selectable_item_background"
             android:paddingTop="10dp" />
 
         <View
@@ -65,8 +75,8 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/distance_picker"
             app:layout_constraintRight_toLeftOf="@id/pace_picker"
-            app:layout_constraintBottom_toTopOf="@id/distance_table"
-            android:background="?android:attr/selectableItemBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/selectable_item_background"
             android:paddingTop="10dp"
             android:paddingBottom="5dp" />
 
@@ -77,19 +87,19 @@
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toRightOf="@id/speed_picker"
             app:layout_constraintTop_toBottomOf="@id/time_picker"
-            app:layout_constraintBottom_toTopOf="@id/distance_table"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:background="?android:attr/selectableItemBackground"
+            android:background="@drawable/selectable_item_background"
             android:paddingTop="10dp"
             android:paddingBottom="5dp" />
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:elevation="0dp"
             android:id="@+id/distance_table"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constrainedHeight="true"
-            app:layout_constraintTop_toBottomOf="@id/pace_picker"
+            app:layout_constraintTop_toBottomOf="@id/input_display"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             style="@style/split_table" />
