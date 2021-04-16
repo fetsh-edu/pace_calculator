@@ -1,7 +1,6 @@
 package me.fetsh.pacecalculator;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
-
 
 import com.google.android.material.color.MaterialColors;
 
@@ -108,11 +106,11 @@ public class DistancesAdapter extends RecyclerView.Adapter<DistancesAdapter.View
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView distanceView;
-        public TextView timeView;
-        public ConstraintLayout parentView;
-        public int rowBackgroundColor;
-        public int rowAccentBackgroundColor;
+        public final TextView distanceView;
+        public final TextView timeView;
+        public final ConstraintLayout parentView;
+        public final int rowBackgroundColor;
+        public final int rowAccentBackgroundColor;
 
         public ViewHolder(View itemView) {
             super(itemView);

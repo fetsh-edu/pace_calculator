@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:inputType="numberDecimal"
+        android:hint="@string/speed"
         tools:text="12.23"
         style="@style/before_spinner_edit_text"
         android:importantForAutofill="no" />

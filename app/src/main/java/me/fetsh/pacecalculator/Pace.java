@@ -7,7 +7,7 @@ public class Pace implements Parcelable {
     private final Time time;
     private final Distance distance;
 
-    public static Pace INITIAL = new Pace(new Time(4, 30), new Distance(1, DistanceUnit.Kilometer, "km"));
+    public static final Pace INITIAL = new Pace(new Time(4, 30), new Distance(1, DistanceUnit.Kilometer, "km"));
 
     public Pace(Time time, Distance distance) {
         this.time = time;
@@ -41,9 +41,8 @@ public class Pace implements Parcelable {
     public int getSeconds(){ return time.getSeconds(); }
 
     public String getPostfixString() {
-        String result = "min/" + distance.getSplitDistanceHeader();
 
-        return result;
+        return "min/" + distance.getSplitDistanceHeader();
     }
 
     @Override

@@ -27,7 +27,7 @@
         <item name="colorDivider">?attr/colorPrimary</item>
 
         <item name="colorTableRow">@color/blue_gray_custom_dark</item>
-        <item name="colorTableRowAccent">@color/blue_gray_custom_lighter</item>
+        <item name="colorTableRowAccent">@color/blue_gray_custom_light</item>
 
         <item name="colorPressedOverlay">@color/color_clicked_dark</item>
 

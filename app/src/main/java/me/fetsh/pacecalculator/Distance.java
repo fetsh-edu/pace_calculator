@@ -32,7 +32,7 @@ public class Distance implements Comparable<Distance>, Parcelable {
         this(amount, unit, null);
     }
 
-    public Distance(@NonNull double amount, @NonNull DistanceUnit unit, @Nullable String name) {
+    public Distance(double amount, @NonNull DistanceUnit unit, @Nullable String name) {
         this.amount = new BigDecimal(amount);
         this.unit = unit;
         this.name = name;
