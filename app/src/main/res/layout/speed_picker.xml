@@ -9,22 +9,22 @@
     android:paddingTop="@dimen/default_padding">
 
     <EditText
+        android:id="@+id/speed_edit_text"
         android:minWidth="100dp"
         android:maxWidth="150dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:inputType="numberDecimal"
-        android:id="@+id/speed_edit_text"
         tools:text="12.23"
         style="@style/before_spinner_edit_text"
         android:importantForAutofill="no" />
-    <Spinner
-        android:id="@+id/speed_spinner"
+    <NumberPicker
+        android:id="@+id/unit_system"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:minHeight="48dp"
         android:layout_marginLeft="5dip"
-         />
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        />
 </LinearLayout>

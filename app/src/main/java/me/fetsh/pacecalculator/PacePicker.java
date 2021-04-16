@@ -28,7 +28,7 @@ public class PacePicker extends AlertDialog {
     };
 
     public PacePicker(@NonNull Context context, OnPaceSetListener onPaceSetListener) {
-        super(context);
+        super(context, R.style.Theme_PaceCalculator_AlertDialog);
 
         this.onPaceSetListener = onPaceSetListener;
 

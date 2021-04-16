@@ -1,34 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="ThemeOverlay.PaceCalculator.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="customMenuTextAppearance" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
-        <item name="android:textColor">@color/menu_item_text_color</item>
+    <style name="Theme.PaceCalculator.PopupMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">?attr/colorPopup</item>
     </style>
 
-    <style name="pace_speed">
+    <style name="TextAppearance.PaceCalculator.IconMenu.Item" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="Widget.PaceCalculator.InputDisplay" parent="Widget.MaterialComponents.CardView">
+        <item name="android:background">?attr/colorSurface</item>
+    </style>
+    <style name="Widget.PaceCalculator.AlertDialogTheme" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+
+    <style name="pace_speed_input">
         <item name="android:paddingLeft">@dimen/default_padding</item>
-    </style>
-    <style name="pace_speed_input" parent="pace_speed">
         <item name="android:textSize">20sp</item>
         <item name="android:paddingBottom">5dp</item>
-        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
-    <style name="pace_speed_header" parent="pace_speed">
+    <style name="pace_speed_header">
+        <item name="android:paddingLeft">@dimen/default_padding</item>
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/primaryDarkColor</item>
+        <item name="android:textColor">?attr/colorOnPrimaryHeader</item>
     </style>
-    <style name="pace_speed_header_postfix" parent="pace_speed">
+
+    <style name="pace_speed_header_postfix">
         <item name="android:paddingLeft">5dp</item>
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/lightTextColor</item>
+        <item name="android:textColor">?attr/colorOnSurfaceLight</item>
     </style>
+
     <style name="spinner_time_picker">
         <item name="android:timePickerMode">spinner</item>
     </style>
+
     <style name="SpinnerTextViewItem">
         <item name="android:minWidth">70dp</item>
         <item name="android:textSize">20sp</item>
@@ -36,19 +48,22 @@
     </style>
 
     <style name="split_table">
-        <item name="android:background">@color/lightestGray</item>
+        <item name="android:background">?android:attr/colorBackground</item>
     </style>
 
     <style name="split_row">
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">@dimen/default_padding</item>
+        <item name="android:paddingRight">@dimen/default_padding</item>
         <item name="android:textSize">13sp</item>
-        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textColor">?attr/colorOnTableRow</item>
     </style>
 
     <style name="before_spinner_edit_text">
         <item name="android:textSize">20sp</item>
+        <item name="android:paddingTop">19dp</item>
+        <item name="android:paddingBottom">19dp</item>
     </style>
 
-    <style name="general_input">
-        <item name="android:background">@color/white</item>
-    </style>
 </resources>

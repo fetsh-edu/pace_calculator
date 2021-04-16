@@ -2,10 +2,10 @@
     <!-- Base application theme. -->
     <style name="Theme.PaceCalculator" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/amber_500</item>
-        <item name="colorPrimaryVariant">@color/amber_500_dark</item>
-        <item name="colorOnPrimary">@color/black</item>
-        <item name="colorOnPrimaryHeader">@color/amber_500_dark</item>
+        <item name="colorPrimary">@color/blue_gray_900</item>
+        <item name="colorPrimaryVariant">@color/blue_gray_custom_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimaryHeader">@color/light_green_500</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/light_green_500</item>
         <item name="colorSecondaryVariant">@color/light_green_500_dark</item>
@@ -18,32 +18,29 @@
         <item name="popupMenuStyle">@style/Theme.PaceCalculator.PopupMenu</item>
         <item name="android:popupMenuStyle">@style/Theme.PaceCalculator.PopupMenu</item>
 
-        <item name="colorSurface">@color/white</item>
-        <item name="colorOnSurface">@color/black</item>
+        <item name="colorSurface">?attr/colorPrimary</item>
+        <item name="colorOnSurface">@color/white</item>
         <item name="colorOnSurfaceLight">@color/lightTextColor</item>
-        <item name="colorPopup">@color/white</item>
-        <item name="colorOnTableRow">@color/black</item>
-        <item name="colorDivider">@color/light_gray</item>
+        <item name="colorPopup">@color/blue_gray_custom_lightest</item>
+        <item name="colorOnTableRow">@color/lightTextColor</item>
+        <item name="colorDivider">?attr/colorPrimary</item>
 
-        <item name="colorTableRow">@color/lightestGray</item>
-        <item name="colorTableRowAccent">@color/light_gray</item>
+        <item name="colorTableRow">@color/blue_gray_custom_dark</item>
+        <item name="colorTableRowAccent">@color/blue_gray_custom_lighter</item>
 
-        <item name="colorPressedOverlay">@color/color_clicked</item>
+        <item name="colorPressedOverlay">@color/color_clicked_dark</item>
 
-        <item name="android:colorBackground">@color/lightestGray</item>
-        <item name="colorOnBackground">?attr/colorOnPrimary</item>
-    </style>
-    <style name="Theme.PaceCalculator.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+        <item name="android:colorBackground">@color/blue_gray_custom_dark</item>
+        <item name="colorOnBackground">@color/light_gray</item>
     </style>
     <style name="Theme.PaceCalculator.AlertDialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
         <!-- Used for the buttons -->
-        <item name="colorPrimary">@color/amber_500_dark</item>
+        <item name="colorPrimary">@color/light_green_500</item>
         <!-- Used for the title and text -->
-        <item name="android:textColorPrimary">@color/amber_500_dark</item>
-        <item name="colorControlActivated">@color/amber_500_dark</item>
+        <item name="android:textColorPrimary">@color/light_green_500</item>
+        <item name="colorControlActivated">@color/light_green_500</item>
         <!-- Used for the background -->
+        <item name="android:background">@color/blue_gray_900</item>
         <item name="android:buttonBarNegativeButtonStyle">@style/Widget.PaceCalculator.AlertDialogTheme</item>
         <item name="android:buttonBarPositiveButtonStyle">@style/Widget.PaceCalculator.AlertDialogTheme</item>
         <item name="android:buttonBarNeutralButtonStyle">@style/Widget.PaceCalculator.AlertDialogTheme</item>

@@ -5,9 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.NumberPicker;
 
 import androidx.annotation.NonNull;
 
@@ -26,11 +25,11 @@ public class DistancePicker extends AlertDialog {
     }
 
     private final EditText distanceInput;
-    private final Spinner distanceUnitSpinner;
+    private final NumberPicker unitSystemPicker;
     private final DistanceInput.OnDistanceSetListener onDistanceSetListener;
 
     public DistancePicker(@NonNull Context context, DistanceInput.OnDistanceSetListener onDistanceSetListener) {
-        super(context);
+        super(context, R.style.Theme_PaceCalculator_AlertDialog);
         this.onDistanceSetListener = onDistanceSetListener;
         final LayoutInflater inflater = LayoutInflater.from(context);
         final View rootPickerView = inflater.inflate(R.layout.distance_picker, null);
@@ -41,13 +40,13 @@ public class DistancePicker extends AlertDialog {
         setTitle(R.string.set_distance);
 
         distanceInput = rootPickerView.findViewById(R.id.distance_edit_text);
-        distanceUnitSpinner = rootPickerView.findViewById(R.id.distance_unit_spinner);
+        unitSystemPicker = rootPickerView.findViewById(R.id.unit_system);
 
         final String[] values = Arrays.stream(DistanceUnit.values()).map(DistanceUnit::getShortName).toArray(String[]::new);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner_item_text, values);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        distanceUnitSpinner.setAdapter(adapter);
+        unitSystemPicker.setMinValue(0);
+        unitSystemPicker.setMaxValue(values.length - 1);
+        unitSystemPicker.setDisplayedValues(values);
     }
 
     public void setDistance(Distance distance) {
@@ -56,7 +55,7 @@ public class DistancePicker extends AlertDialog {
     }
 
     public void setUnitSystem(DistanceUnit unit) {
-        distanceUnitSpinner.setSelection(unit.ordinal());
+        unitSystemPicker.setValue(unit.ordinal());
     }
 
     private void onNegativeButton(DialogInterface dialogInterface, int i) {
@@ -67,7 +66,7 @@ public class DistancePicker extends AlertDialog {
         if (onDistanceSetListener == null) return;
 
         onDistanceSetListener.onDistanceSet(
-                new Distance(Double.parseDouble(distanceInput.getText().toString()), DistanceUnit.values()[distanceUnitSpinner.getSelectedItemPosition()])
+                new Distance(Double.parseDouble(distanceInput.getText().toString()), DistanceUnit.values()[unitSystemPicker.getValue()])
         );
     }
 }

@@ -5,9 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.NumberPicker;
 
 import androidx.annotation.NonNull;
 
@@ -30,7 +29,7 @@ public class SpeedPicker extends AlertDialog {
     }
 
     private final EditText speedInput;
-    private final Spinner distanceSpinner;
+    private final NumberPicker unitSystemPicker;
     private final SpeedPicker.OnSpeedSetListener onSpeedSetListener;
     private final Distance[] distances = {
             new Distance(1, DistanceUnit.Kilometer, "km/h"),
@@ -38,7 +37,7 @@ public class SpeedPicker extends AlertDialog {
     };
 
     public SpeedPicker(@NonNull Context context, SpeedPicker.OnSpeedSetListener onSpeedSetListener) {
-        super(context);
+        super(context, R.style.Theme_PaceCalculator_AlertDialog);
         this.onSpeedSetListener = onSpeedSetListener;
         final LayoutInflater inflater = LayoutInflater.from(context);
         final View rootPickerView = inflater.inflate(R.layout.speed_picker, null);
@@ -49,13 +48,13 @@ public class SpeedPicker extends AlertDialog {
         setTitle(R.string.set_speed);
 
         speedInput = rootPickerView.findViewById(R.id.speed_edit_text);
-        distanceSpinner = rootPickerView.findViewById(R.id.speed_spinner);
+        unitSystemPicker = rootPickerView.findViewById(R.id.unit_system);
 
         final String[] values = Arrays.stream(distances).map(Distance::toString).toArray(String[]::new);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner_item_text, values);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        distanceSpinner.setAdapter(adapter);
+        unitSystemPicker.setMinValue(0);
+        unitSystemPicker.setMaxValue(values.length - 1);
+        unitSystemPicker.setDisplayedValues(values);
     }
 
     public void setSpeed(Speed speed) {
@@ -65,7 +64,7 @@ public class SpeedPicker extends AlertDialog {
 
     public void setUnitSystem(Distance distance) {
         int position = Arrays.asList(distances).indexOf(distance);
-        distanceSpinner.setSelection(position);
+        unitSystemPicker.setValue(position);
     }
 
     private void onNegativeButton(DialogInterface dialogInterface, int i) {
@@ -74,7 +73,6 @@ public class SpeedPicker extends AlertDialog {
 
     private void onPositiveButton(DialogInterface dialogInterface, int i) {
         if (onSpeedSetListener == null) return;
-
-        onSpeedSetListener.onSpeedSet(new Speed(Double.parseDouble(speedInput.getText().toString()), distances[distanceSpinner.getSelectedItemPosition()]));
+        onSpeedSetListener.onSpeedSet(new Speed(Double.parseDouble(speedInput.getText().toString()), distances[unitSystemPicker.getValue()]));
     }
 }

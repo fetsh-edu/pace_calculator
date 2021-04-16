@@ -21,7 +21,7 @@ public class TimePicker extends AlertDialog {
 
 
     public TimePicker(@NonNull Context context, OnTimeSetListener onTimeSetListener) {
-        super(context);
+        super(context, R.style.Theme_PaceCalculator_AlertDialog);
 
         this.onTimeSetListener = onTimeSetListener;
 

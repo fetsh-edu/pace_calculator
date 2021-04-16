@@ -8,11 +8,14 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
 
@@ -110,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             checkedItem = mSplits.indexOf(mCalcDataVM.getSplit().getValue()) + 1;
         }
-        new AlertDialog.Builder(MainActivity.this)
+        new AlertDialog.Builder(new ContextThemeWrapper(MainActivity.this, R.style.Theme_PaceCalculator_AlertDialog))
                 .setTitle(R.string.set_split)
                 .setSingleChoiceItems(mSplitPickerItems, checkedItem, (dialog, which) -> {
                     if (which == 0) {

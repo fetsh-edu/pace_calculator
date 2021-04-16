@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="colorOnSurfaceLight" format="reference" />
+    <attr name="colorDivider" format="reference" />
+    <attr name="colorOnPrimaryHeader" format="reference" />
+    <attr name="colorTableRow" format="reference" />
+    <attr name="colorTableRowAccent" format="reference" />
+    <attr name="colorPressedOverlay" format="reference" />
+    <attr name="colorOnTableRow" format="reference" />
+    <attr name="colorPopup" format="reference" />
+</resources>

@@ -1,5 +1,5 @@
 <ripple
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:color="@color/color_clicked"
+    android:color="?attr/colorPressedOverlay"
     tools:ignore="NewApi" />

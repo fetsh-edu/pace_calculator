@@ -1,6 +1,7 @@
 package me.fetsh.pacecalculator;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+
+import com.google.android.material.color.MaterialColors;
 
 import java.util.List;
 
@@ -56,15 +60,15 @@ public class DistancesAdapter extends RecyclerView.Adapter<DistancesAdapter.View
         if (distanceIsImportant(distance) || position == mDistances.size() - 1) {
             distanceTV.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
             timeTV.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-            holder.itemView.setBackgroundResource(R.color.lightGray);
+            holder.itemView.setBackgroundColor(holder.rowAccentBackgroundColor);
         } else if (distanceIsSemiImportant(distance, step)) {
             distanceTV.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
             timeTV.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-            holder.itemView.setBackgroundResource(R.color.lightGray);
+            holder.itemView.setBackgroundColor(holder.rowAccentBackgroundColor);
         } else {
             distanceTV.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
             timeTV.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-            holder.itemView.setBackgroundResource(R.color.lightestGray);
+            holder.itemView.setBackgroundColor(holder.rowBackgroundColor);
         }
 
         boolean isRegularStep = distance.remainder(step) < 0.000001d;
@@ -107,13 +111,17 @@ public class DistancesAdapter extends RecyclerView.Adapter<DistancesAdapter.View
         public TextView distanceView;
         public TextView timeView;
         public ConstraintLayout parentView;
+        public int rowBackgroundColor;
+        public int rowAccentBackgroundColor;
 
         public ViewHolder(View itemView) {
             super(itemView);
+
             parentView = itemView.findViewById(R.id.split_item_holder);
             distanceView = itemView.findViewById(R.id.distance);
             timeView = itemView.findViewById(R.id.time);
+            rowBackgroundColor = MaterialColors.getColor(parentView, R.attr.colorTableRow);
+            rowAccentBackgroundColor = MaterialColors.getColor(parentView, R.attr.colorTableRowAccent);
         }
-
     }
 }
