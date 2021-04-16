@@ -21,4 +21,9 @@
     <string name="set_distance">Set distance</string>
     <string name="set_split">Set split size</string>
     <string name="split_auto">Auto (based on pace)</string>
+    <string name="change_theme">Night mode</string>
+    <string name="set_theme">Set theme</string>
+    <string name="light_theme">Light</string>
+    <string name="dark_theme">Dark</string>
+    <string name="system_theme">Follow system</string>
 </resources>

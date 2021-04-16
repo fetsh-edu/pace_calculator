@@ -2,6 +2,7 @@ package me.fetsh.pacecalculator;
 
 import android.content.SharedPreferences;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -15,6 +16,7 @@ public class CalculatorDataVM extends ViewModel {
 
     private SharedPreferencesData<Pace> pace;
     private SharedPreferencesData<Distance> split;
+    private SharedPreferencesData<Integer> nightMode;
     private SharedPreferencesData<Distance> distance;
     private final MutableLiveData<Speed> speed = new MutableLiveData<>();
     private final MutableLiveData<Time> time = new MutableLiveData<>();
@@ -65,6 +67,12 @@ public class CalculatorDataVM extends ViewModel {
         }
         return split;
     }
+    public LiveData<Integer> getNightMode() {
+        if (nightMode == null) {
+            nightMode = new SharedNightMode(sharedPreferences);
+        }
+        return nightMode;
+    }
 
     public void setPace(Pace pace) {
         sharedPreferences.edit().putString(SharedPace.PACE_KEY, new Gson().toJson(pace)).apply();
@@ -98,6 +106,10 @@ public class CalculatorDataVM extends ViewModel {
         sharedPreferences.edit().putString(SharedSplit.SPLIT_KEY, new Gson().toJson(split)).apply();
     }
 
+    public void setNightMode(Integer nightMode) {
+        sharedPreferences.edit().putInt(SharedNightMode.NIGHT_MODE_KEY, nightMode).apply();
+    }
+
     public void updateDistancesWithSplit(Distance split) {
         updateDistancesWithSplitOrPace(split, getPace().getValue().getDistance());
     }
@@ -111,6 +123,24 @@ public class CalculatorDataVM extends ViewModel {
         Distance savedSplit = getSplit().getValue();
         if (savedSplit != null) return savedSplit;
         return or;
+    }
+
+
+    private static class SharedNightMode extends SharedPreferencesData<Integer> {
+        private static final String NIGHT_MODE_KEY = "night_mode_key";
+        public SharedNightMode(SharedPreferences sharedPreferences) {
+            super(sharedPreferences, NIGHT_MODE_KEY, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+            super.setListener((_p, key) -> {
+                if (key.equals(NIGHT_MODE_KEY)) {
+                    setValue(getSharedPreferences().getInt(getKey(), getDefaultValue()));
+                }
+            });
+            setValueFromPrefOrDefault();
+        }
+        @Override
+        void setValueFromPrefOrDefault() {
+            setValue(getSharedPreferences().getInt(getKey(), getDefaultValue()));
+        }
     }
 
     private static class SharedSplit extends SharedPreferencesData<Distance> {

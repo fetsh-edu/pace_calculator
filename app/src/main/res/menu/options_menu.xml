@@ -10,7 +10,12 @@
         <menu>
             <item android:id="@+id/action_change_split_size"
                 app:showAsAction="ifRoom"
+                android:icon="@drawable/baseline_horizontal_split_24dp"
                 android:title="@string/change_split_size" />
+            <item android:id="@+id/action_change_theme"
+                app:showAsAction="ifRoom"
+                android:icon="@drawable/outline_brightness_4_24dp"
+                android:title="@string/change_theme" />
         </menu>
 
     </item>

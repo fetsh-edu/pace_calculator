@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.PaceCalculator" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/blue_gray_900</item>
         <item name="colorPrimaryVariant">@color/blue_gray_custom_dark</item>

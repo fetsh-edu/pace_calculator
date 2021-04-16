@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
     <style name="ThemeOverlay.PaceCalculator.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.PaceCalculator.PopupMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:itemBackground">@drawable/selectable_item_background</item>
         <item name="android:popupBackground">?attr/colorPopup</item>
     </style>
 

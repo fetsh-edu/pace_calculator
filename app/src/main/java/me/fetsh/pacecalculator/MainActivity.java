@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModel;
@@ -15,44 +16,55 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
 
     public CalculatorDataVM mCalcDataVM;
     private static final List<Distance> mSplits = Distance.splits();
-    private static final String[] mSplitPickerItems;
+    private static final String[] splitPickerItems;
     static {
         String[] splitNames = mSplits.stream().map(Distance::getFullName).toArray(String[]::new);
-        mSplitPickerItems = new String[splitNames.length + 1];
-        System.arraycopy(splitNames, 0, mSplitPickerItems, 1, splitNames.length);
+        splitPickerItems = new String[splitNames.length + 1];
+        System.arraycopy(splitNames, 0, splitPickerItems, 1, splitNames.length);
     }
+    private static final List<Integer> availableThemes = Arrays.asList(
+        AppCompatDelegate.MODE_NIGHT_NO,
+        AppCompatDelegate.MODE_NIGHT_YES,
+        AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+    );
 
     private PaceInput mPaceInput;
     private SpeedInput mSpeedInput;
     private TimeInput mTimeInput;
     private DistanceInput mDistanceInput;
+    private String[] mAvailableThemesStrings;
 
     private final DistancesAdapter mAdapter = new DistancesAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mCalcDataVM = new ViewModelProvider(this, new ViewModelProvider.Factory() {
+            @NonNull
+            @Override
+            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+                return (T) new CalculatorDataVM(getSharedPreferences("RunningCalc", MODE_PRIVATE));
+            }
+        }).get(CalculatorDataVM.class);
+
+        if (savedInstanceState == null)
+            AppCompatDelegate.setDefaultNightMode(mCalcDataVM.getNightMode().getValue());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        SharedPreferences preferences = getSharedPreferences("RunningCalc", MODE_PRIVATE);
-        ViewModelProvider.Factory factory = new ViewModelProvider.Factory() {
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-                return (T) new CalculatorDataVM(preferences);
-            }
+        mAvailableThemesStrings = new String[]{
+                getResources().getString(R.string.light_theme),
+                getResources().getString(R.string.dark_theme),
+                getResources().getString(R.string.system_theme)
         };
-
-        mCalcDataVM = new ViewModelProvider(this, factory).get(CalculatorDataVM.class);
 
         mPaceInput = findViewById(R.id.pace_picker);
         mSpeedInput = findViewById(R.id.speed_picker);
@@ -69,26 +81,17 @@ public class MainActivity extends AppCompatActivity {
         rvDistances.setLayoutManager(new LinearLayoutManager(this));
 
 
-        mCalcDataVM.getPace().observe(this, pace -> {
-            mPaceInput.setPace(pace);
-        });
-        mCalcDataVM.getSpeed().observe(this, speed -> {
-            mSpeedInput.setSpeed(speed);
-        });
-        mCalcDataVM.getDistance().observe(this, distance -> {
-            mDistanceInput.setDistance(distance);
-        });
-        mCalcDataVM.getTime().observe(this, time -> {
-            mTimeInput.setTime(time);
-        });
+        mCalcDataVM.getPace().observe(this, pace -> mPaceInput.setPace(pace));
+        mCalcDataVM.getSpeed().observe(this, speed -> mSpeedInput.setSpeed(speed));
+        mCalcDataVM.getDistance().observe(this, distance -> mDistanceInput.setDistance(distance));
+        mCalcDataVM.getTime().observe(this, time -> mTimeInput.setTime(time));
         mCalcDataVM.getSplits().observe(this, splits -> {
             mAdapter.setPace(mCalcDataVM.getPace().getValue());
             mAdapter.setDistances(splits);
             mAdapter.notifyDataSetChanged();
         });
-        mCalcDataVM.getSplit().observe(this, split -> {
-            mCalcDataVM.updateDistancesWithSplit(split);
-        });
+        mCalcDataVM.getSplit().observe(this, split -> mCalcDataVM.updateDistancesWithSplit(split));
+        mCalcDataVM.getNightMode().observe(this, AppCompatDelegate::setDefaultNightMode);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -99,14 +102,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_change_split_size) {
-            showAlertDialog();
+            showSplitAlertDialog();
+            return true;
+        } else if(item.getItemId() == R.id.action_change_theme) {
+            showThemeAlertDialog();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void showAlertDialog() {
-        mSplitPickerItems[0] = getString(R.string.split_auto);
+    private void showSplitAlertDialog() {
+        splitPickerItems[0] = getString(R.string.split_auto);
         int checkedItem;
         if (mCalcDataVM.getSplit().getValue() == null) {
             checkedItem = 0;
@@ -115,12 +121,23 @@ public class MainActivity extends AppCompatActivity {
         }
         new AlertDialog.Builder(new ContextThemeWrapper(MainActivity.this, R.style.Theme_PaceCalculator_AlertDialog))
                 .setTitle(R.string.set_split)
-                .setSingleChoiceItems(mSplitPickerItems, checkedItem, (dialog, which) -> {
+                .setSingleChoiceItems(splitPickerItems, checkedItem, (dialog, which) -> {
                     if (which == 0) {
                         mCalcDataVM.setSplit(null);
                     } else {
                         mCalcDataVM.setSplit(mSplits.get(which - 1));
                     }
+                    dialog.cancel();
+                })
+                .create()
+                .show();
+    }
+
+    private void showThemeAlertDialog() {
+        new AlertDialog.Builder(new ContextThemeWrapper(MainActivity.this, R.style.Theme_PaceCalculator_AlertDialog))
+                .setTitle(R.string.set_theme)
+                .setSingleChoiceItems(mAvailableThemesStrings, availableThemes.indexOf(mCalcDataVM.getNightMode().getValue()), (dialog, which) -> {
+                    mCalcDataVM.setNightMode(availableThemes.get(which));
                     dialog.cancel();
                 })
                 .create()
