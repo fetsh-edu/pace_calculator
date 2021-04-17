@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         mCalcDataVM = new ViewModelProvider(this, new ViewModelProvider.Factory() {
             @NonNull
             @Override
@@ -52,9 +54,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }).get(CalculatorDataVM.class);
 
-        if (savedInstanceState == null)
-            AppCompatDelegate.setDefaultNightMode(mCalcDataVM.getNightMode().getValue());
-        super.onCreate(savedInstanceState);
+        AppCompatDelegate.setDefaultNightMode(mCalcDataVM.getNightMode().getValue());
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
