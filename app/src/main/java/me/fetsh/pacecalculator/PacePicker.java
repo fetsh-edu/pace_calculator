@@ -44,7 +44,7 @@ public class PacePicker extends AlertDialog {
         minutesPicker = rootPickerView.findViewById(R.id.minutes);
         secondsPicker = rootPickerView.findViewById(R.id.seconds);
         unitSystemPicker = rootPickerView.findViewById(R.id.unit_system);
-        minutesPicker.setMinValue(3);
+        minutesPicker.setMinValue(2);
         minutesPicker.setMaxValue(10);
         secondsPicker.setMinValue(0);
         secondsPicker.setMaxValue(59);
