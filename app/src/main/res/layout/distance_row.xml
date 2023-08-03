@@ -8,6 +8,8 @@
 
 
     <TextView
+        android:textDirection="ltr"
+        android:layoutDirection="ltr"
         android:id="@+id/distance"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -19,6 +21,8 @@
 
     <TextView
         android:id="@+id/time"
+        android:textDirection="ltr"
+        android:layoutDirection="ltr"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"

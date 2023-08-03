@@ -22,11 +22,14 @@ public class MainActivity extends AppCompatActivity {
 
     public CalculatorDataVM mCalcDataVM;
     private static final List<Distance> mSplits = Distance.splits();
+    private static final List<Precision> mPrecisions = Arrays.asList(Precision.values());
+    private static final String[] mPrecisionNames;
     private static final String[] splitPickerItems;
     static {
         String[] splitNames = mSplits.stream().map(Distance::getFullName).toArray(String[]::new);
         splitPickerItems = new String[splitNames.length + 1];
         System.arraycopy(splitNames, 0, splitPickerItems, 1, splitNames.length);
+        mPrecisionNames = mPrecisions.stream().map(Enum::name).toArray(String[]::new);
     }
     private static final List<Integer> availableThemes = Arrays.asList(
         AppCompatDelegate.MODE_NIGHT_NO,
@@ -84,11 +87,7 @@ public class MainActivity extends AppCompatActivity {
         mCalcDataVM.getSpeed().observe(this, speed -> mSpeedInput.setSpeed(speed));
         mCalcDataVM.getDistance().observe(this, distance -> mDistanceInput.setDistance(distance));
         mCalcDataVM.getTime().observe(this, time -> mTimeInput.setTime(time));
-        mCalcDataVM.getSplits().observe(this, splits -> {
-            mAdapter.setPace(mCalcDataVM.getPace().getValue());
-            mAdapter.setDistances(splits);
-            mAdapter.notifyDataSetChanged();
-        });
+        mCalcDataVM.getSplits().observe(this, splits -> mAdapter.reload(mCalcDataVM.getPace().getValue(), splits));
         mCalcDataVM.getSplit().observe(this, split -> mCalcDataVM.updateDistancesWithSplit(split));
         mCalcDataVM.getNightMode().observe(this, AppCompatDelegate::setDefaultNightMode);
     }
@@ -102,6 +101,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_change_split_size) {
             showSplitAlertDialog();
+            return true;
+        } else if(item.getItemId() == R.id.action_change_precision) {
+            showPrecisionAlertDialog();
             return true;
         } else if(item.getItemId() == R.id.action_change_theme) {
             showThemeAlertDialog();
@@ -126,6 +128,17 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         mCalcDataVM.setSplit(mSplits.get(which - 1));
                     }
+                    dialog.cancel();
+                })
+                .create()
+                .show();
+    }
+
+    private void showPrecisionAlertDialog() {
+        new AlertDialog.Builder(new ContextThemeWrapper(MainActivity.this, R.style.Theme_PaceCalculator_AlertDialog))
+                .setTitle(R.string.set_precision)
+                .setSingleChoiceItems(mPrecisionNames, mPrecisions.indexOf(mCalcDataVM.getTime().getValue().precision), (dialog, which) -> {
+                    mCalcDataVM.setPrecision(mPrecisions.get(which));
                     dialog.cancel();
                 })
                 .create()

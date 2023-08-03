@@ -2,8 +2,11 @@
     <string name="app_name">Pace Calculator</string>
     <string name="pace">Pace</string>
     <string name="speed">Speed</string>
+    <string name="milli">milli</string>
+    <string name="centi">centi</string>
+    <string name="deci">deci</string>
     <string name="ok">@android:string/ok</string>
-    <string name="cancel">Cancel</string>
+    <string name="cancel">@android:string/cancel</string>
     <string name="speed_postfix">km/h</string>
     <string name="pace_postfix">min/km</string>
     <string name="distance">Distance</string>
@@ -17,9 +20,11 @@
     <string name="set_time">Set time</string>
     <string name="options">Options</string>
     <string name="change_split_size">Change split size</string>
+    <string name="change_precision">Change precision</string>
     <string name="custom_distance">Custom distance</string>
     <string name="set_distance">Set distance</string>
     <string name="set_split">Set split size</string>
+    <string name="set_precision">Set precision</string>
     <string name="split_auto">Auto (based on pace)</string>
     <string name="change_theme">Theme</string>
     <string name="set_theme">Set theme</string>

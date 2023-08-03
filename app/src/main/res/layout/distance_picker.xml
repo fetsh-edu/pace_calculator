@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_gravity="center_horizontal"
+    android:layoutDirection="ltr"
     android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -16,7 +17,7 @@
         android:layout_gravity="center_vertical"
         android:inputType="numberDecimal"
         android:id="@+id/distance_edit_text"
-        android:hint="@string/speed"
+        android:hint="@string/distance"
         tools:text="100.222"
         style="@style/before_spinner_edit_text"
         android:importantForAutofill="no" />

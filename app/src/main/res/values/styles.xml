@@ -65,5 +65,10 @@
         <item name="android:paddingTop">19dp</item>
         <item name="android:paddingBottom">19dp</item>
     </style>
+    <style name="after_spinner_edit_text">
+        <item name="android:textSize">15sp</item>
+        <item name="android:paddingTop">18dp</item>
+        <item name="android:paddingBottom">18dp</item>
+    </style>
 
 </resources>

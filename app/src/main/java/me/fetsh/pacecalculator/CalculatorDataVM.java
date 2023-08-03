@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.gson.Gson;
-
 import java.util.List;
 
 public class CalculatorDataVM extends ViewModel {
@@ -18,6 +17,7 @@ public class CalculatorDataVM extends ViewModel {
     private SharedPreferencesData<Distance> split;
     private SharedPreferencesData<Integer> nightMode;
     private SharedPreferencesData<Distance> distance;
+
     private final MutableLiveData<Speed> speed = new MutableLiveData<>();
     private final MutableLiveData<Time> time = new MutableLiveData<>();
     private final MutableLiveData<List<Distance>> splits = new MutableLiveData<>();
@@ -67,18 +67,12 @@ public class CalculatorDataVM extends ViewModel {
         }
         return split;
     }
+
     public LiveData<Integer> getNightMode() {
         if (nightMode == null) {
             nightMode = new SharedNightMode(sharedPreferences);
         }
         return nightMode;
-    }
-
-    public void setPace(Pace pace) {
-        sharedPreferences.edit().putString(SharedPace.PACE_KEY, new Gson().toJson(pace)).apply();
-        speed.setValue(Speed.fromPace(pace));
-        time.setValue(pace.getTime(getDistance().getValue()));
-        updateDistancesWithSplitOrPace(getSplit().getValue(), pace.getDistance());
     }
 
     public void setDistance(Distance distance) {
@@ -87,18 +81,25 @@ public class CalculatorDataVM extends ViewModel {
         updateDistancesWithSplitOrPace(getSplit().getValue(), getPace().getValue().getDistance());
     }
 
+    public void setPace(Pace newPace) {
+        Speed newSpeed = Speed.fromPace(newPace);
+        updateSpeedPaceTimeAndSplits(newSpeed, newPace);
+    }
+
     public void setTime(Time time) {
         Pace newPace = getPace().getValue().convertWithDistanceAndTime(getDistance().getValue(), time);
-        sharedPreferences.edit().putString(SharedPace.PACE_KEY, new Gson().toJson(newPace)).apply();
-        speed.setValue(Speed.fromPace(newPace));
-        this.time.setValue(newPace.getTime(getDistance().getValue()));
-        updateDistancesWithSplitOrPace(getSplit().getValue(), newPace.getDistance());
+        Speed newSpeed = Speed.fromPace(newPace);
+        updateSpeedPaceTimeAndSplits(newSpeed, newPace);
     }
-    public void setSpeed(Speed speed) {
-        this.speed.setValue(speed);
-        Pace newPace = new Pace(new Time((int) Math.round(3600d / speed.getSpeed())), speed.getDistance());
-        sharedPreferences.edit().putString(SharedPace.PACE_KEY, new Gson().toJson(newPace)).apply();
+    public void setSpeed(Speed newSpeed) {
+        Pace newPace = new Pace(Time.fromSeconds((int) Math.round(3600d / newSpeed.getSpeed()),this.getPace().getValue().getTime().precision), newSpeed.getDistance());
+        updateSpeedPaceTimeAndSplits(newSpeed, newPace);
+    }
+
+    private void updateSpeedPaceTimeAndSplits(Speed newSpeed, Pace newPace) {
+        sharedPreferences.edit().putString(SharedPace.PACE_KEY, newPace.toJson()).apply();
         this.time.setValue(newPace.getTime(getDistance().getValue()));
+        this.speed.setValue(newSpeed);
         updateDistancesWithSplitOrPace(getSplit().getValue(), newPace.getDistance());
     }
 
@@ -110,6 +111,12 @@ public class CalculatorDataVM extends ViewModel {
         sharedPreferences.edit().putInt(SharedNightMode.NIGHT_MODE_KEY, nightMode).apply();
     }
 
+    public void setPrecision(Precision precision) {
+        Pace newPace = getPace().getValue().withPrecision(precision);
+        Speed newSpeed = Speed.fromPace(newPace);
+        updateSpeedPaceTimeAndSplits(newSpeed, newPace);
+    }
+
     public void updateDistancesWithSplit(Distance split) {
         updateDistancesWithSplitOrPace(split, getPace().getValue().getDistance());
     }
@@ -118,13 +125,6 @@ public class CalculatorDataVM extends ViewModel {
         if (split == null) split = paceSplit;
         splits.setValue(Distance.all(new Distance(0, split.getUnit()), getDistance().getValue(), split));
     }
-
-    private Distance getSplitOr(Distance or){
-        Distance savedSplit = getSplit().getValue();
-        if (savedSplit != null) return savedSplit;
-        return or;
-    }
-
 
     private static class SharedNightMode extends SharedPreferencesData<Integer> {
         private static final String NIGHT_MODE_KEY = "night_mode_key";
@@ -184,13 +184,17 @@ public class CalculatorDataVM extends ViewModel {
     }
 
     private static class SharedPace extends SharedPreferencesData<Pace> {
-        private static final String PACE_KEY = "pace_key";
+        private static final String PACE_KEY = "pace_key_0308231205";
 
         public SharedPace(SharedPreferences sharedPreferences) {
             super(sharedPreferences, PACE_KEY, Pace.INITIAL);
             super.setListener((_p, key) -> {
                 if (key.equals(PACE_KEY)) {
-                    setValue(new Gson().fromJson(getSharedPreferences().getString(getKey(), null), Pace.class));
+                    setValue(
+                        Pace.fromJson(
+                            getSharedPreferences().getString(getKey(), null)
+                        )
+                    );
                 }
             });
             setValueFromPrefOrDefault();
@@ -199,7 +203,7 @@ public class CalculatorDataVM extends ViewModel {
         @Override
         void setValueFromPrefOrDefault() {
             Pace newValue = getSharedPreferences().contains(getKey())
-                    ? new Gson().fromJson(getSharedPreferences().getString(getKey(), null), Pace.class)
+                    ? Pace.fromJson(getSharedPreferences().getString(getKey(), null))
                     : getDefaultValue();
             setValue(newValue);
         }

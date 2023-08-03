@@ -23,17 +23,10 @@ public class DistancesAdapter extends RecyclerView.Adapter<DistancesAdapter.View
     public DistancesAdapter() {
     }
 
-    public DistancesAdapter(List<Distance> distances, Pace pace) {
-        mDistances = distances;
-        mPace = pace;
-    }
-
-    public void setPace(Pace mPace) {
+    public void reload(Pace mPace, List<Distance> distances) {
         this.mPace = mPace;
-    }
-
-    public void setDistances(List<Distance> distances) {
         this.mDistances = distances;
+        this.notifyDataSetChanged();
     }
 
     @NonNull

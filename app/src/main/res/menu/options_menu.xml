@@ -12,6 +12,11 @@
                 app:showAsAction="ifRoom"
                 android:icon="@drawable/baseline_horizontal_split_24dp"
                 android:title="@string/change_split_size" />
+            <item
+                android:id="@+id/action_change_precision"
+                android:icon="@drawable/baseline_av_timer_black_24dp"
+                android:title="@string/change_precision"
+                app:showAsAction="ifRoom" />
             <item android:id="@+id/action_change_theme"
                 app:showAsAction="ifRoom"
                 android:icon="@drawable/outline_brightness_4_24dp"
