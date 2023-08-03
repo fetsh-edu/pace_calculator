@@ -68,6 +68,7 @@ public class Distance implements Comparable<Distance>, Parcelable {
         distances.add(new Distance(100, DistanceUnit.Meter));
         distances.add(new Distance(200, DistanceUnit.Meter));
         distances.add(new Distance(400, DistanceUnit.Meter));
+        distances.add(new Distance(500, DistanceUnit.Meter));
         distances.add(new Distance(1, DistanceUnit.Kilometer));
         distances.add(new Distance(1, DistanceUnit.Mile));
         distances.add(new Distance(5, DistanceUnit.Kilometer));
