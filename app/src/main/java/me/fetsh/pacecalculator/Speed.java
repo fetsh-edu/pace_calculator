@@ -5,6 +5,7 @@ import java.util.Locale;
 public class Speed {
     private final double speed;
     private final Distance distance;
+    public static final double INIT_SPEED = 14.06;
 
     public Speed(double speed, Distance distance) {
         this.speed = speed;

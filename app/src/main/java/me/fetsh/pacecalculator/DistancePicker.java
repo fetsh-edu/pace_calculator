@@ -3,6 +3,7 @@ package me.fetsh.pacecalculator;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -64,9 +65,14 @@ public class DistancePicker extends AlertDialog {
 
     private void onPositiveButton(DialogInterface dialogInterface, int i) {
         if (onDistanceSetListener == null) return;
-
+        double newDouble = Utils.parseDouble(
+                distanceInput.getText().toString(),
+                Utils.MIN_DISTANCE,
+                Utils.MAX_DISTANCE,
+                Distance.halfMarathon().getAmount()
+        );
         onDistanceSetListener.onDistanceSet(
-                new Distance(Double.parseDouble(distanceInput.getText().toString()), DistanceUnit.values()[unitSystemPicker.getValue()])
+                new Distance(newDouble, DistanceUnit.values()[unitSystemPicker.getValue()])
         );
     }
 }

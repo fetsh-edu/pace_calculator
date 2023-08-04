@@ -72,7 +72,7 @@ public class Pace implements Parcelable {
         return time.toString();
     }
 
-
+    @SuppressWarnings("deprecation")
     protected Pace(Parcel in) {
         this.time = in.readParcelable(Time.class.getClassLoader());
         this.distance = in.readParcelable(Distance.class.getClassLoader());

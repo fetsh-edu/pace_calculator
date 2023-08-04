@@ -2,6 +2,7 @@ package me.fetsh.pacecalculator;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,12 @@ public class DistancesAdapter extends RecyclerView.Adapter<DistancesAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         Distance distance = mDistances.get(position);
-        Distance step = mDistances.get(1);
+        Distance step;
+        if (mDistances.size() < 2) {
+            step = mDistances.get(0);
+        } else {
+            step = mDistances.get(1);
+        }
 
         TextView distanceTV = holder.distanceView;
         TextView timeTV = holder.timeView;

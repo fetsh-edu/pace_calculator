@@ -71,7 +71,6 @@ public class DistanceInput extends ConstraintLayout implements View.OnClickListe
     public void setDistance(Distance distance) {
         this.distance = distance;
         mDistanceInput.setText(distance.getFullName());
-
     }
 
     public void setOnDistanceSetListener(OnDistanceSetListener onDistanceSet) {

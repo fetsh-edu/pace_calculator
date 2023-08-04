@@ -73,6 +73,14 @@ public class SpeedPicker extends AlertDialog {
 
     private void onPositiveButton(DialogInterface dialogInterface, int i) {
         if (onSpeedSetListener == null) return;
-        onSpeedSetListener.onSpeedSet(new Speed(Double.parseDouble(speedInput.getText().toString()), distances[unitSystemPicker.getValue()]));
+        double newDouble = Utils.parseDouble(
+                speedInput.getText().toString(),
+                Utils.MIN_SPEED,
+                Utils.MAX_SPEED,
+                Speed.INIT_SPEED
+        );
+        onSpeedSetListener.onSpeedSet(
+            new Speed(newDouble, distances[unitSystemPicker.getValue()])
+        );
     }
 }
