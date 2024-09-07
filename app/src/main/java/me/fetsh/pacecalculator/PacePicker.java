@@ -49,7 +49,7 @@ public class PacePicker extends AlertDialog {
         secondsPicker = rootPickerView.findViewById(R.id.seconds);
         unitSystemPicker = rootPickerView.findViewById(R.id.unit_system);
         minutesPicker.setMinValue(2);
-        minutesPicker.setMaxValue(10);
+        minutesPicker.setMaxValue(30);
         secondsPicker.setMinValue(0);
         secondsPicker.setMaxValue(59);
         secondsPicker.setFormatter(s -> String.format(Locale.getDefault(), "%02d", s));
