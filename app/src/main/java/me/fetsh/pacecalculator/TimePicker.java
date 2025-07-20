@@ -45,7 +45,7 @@ public class TimePicker extends AlertDialog {
         millisPicker = rootPickerView.findViewById(R.id.time_millis);
 
         hoursPicker.setMinValue(0);
-        hoursPicker.setMaxValue(23);
+        hoursPicker.setMaxValue(168);
         minutesPicker.setMinValue(0);
         minutesPicker.setMaxValue(59);
         minutesPicker.setFormatter(s -> String.format(Locale.US, "%02d", s));

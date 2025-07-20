@@ -2,6 +2,7 @@ package me.fetsh.pacecalculator;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,14 +34,21 @@ public class Distance implements Comparable<Distance>, Parcelable {
 
     public Distance(double amount, @NonNull DistanceUnit unit, @Nullable String name) {
         double newAmount;
-        if (amount > 400000) {
-            newAmount = 400000;
+
+        this.unit = unit;
+        this.name = name;
+
+
+        if (unit == DistanceUnit.Mile && amount > 10000) {
+            newAmount = 10000;
+        } else if (unit == DistanceUnit.Kilometer && amount > 10000) {
+            newAmount = 10000;
+        } else if (unit == DistanceUnit.Meter && amount > 1000000000) {
+            newAmount = 1000000000;
         } else {
             newAmount = amount;
         }
         this.amount = new BigDecimal(newAmount);
-        this.unit = unit;
-        this.name = name;
     }
 
     public static Distance marathon() {
@@ -49,11 +57,11 @@ public class Distance implements Comparable<Distance>, Parcelable {
     public static Distance halfMarathon() {
         return new Distance(21.0975, DistanceUnit.Kilometer, "1/2 Marathon");
     }
-    public static Distance fromMillis(int millimeters, DistanceUnit unit) {
+    public static Distance fromCentimeters(int centimeters, DistanceUnit unit) {
         switch (unit) {
-            case Mile: return new Distance(BigDecimal.valueOf(millimeters).divide(BigDecimal.valueOf(1609344), MathContext.DECIMAL64).doubleValue(), unit);
-            case Meter: return new Distance(BigDecimal.valueOf(millimeters).divide(BigDecimal.valueOf(1000), MathContext.DECIMAL64).doubleValue(), unit);
-            case Kilometer: return new Distance(BigDecimal.valueOf(millimeters).divide(BigDecimal.valueOf(1000000), MathContext.DECIMAL64).doubleValue(), unit);
+            case Mile: return new Distance(BigDecimal.valueOf(centimeters).divide(BigDecimal.valueOf(160934.4), MathContext.DECIMAL64).doubleValue(), unit);
+            case Meter: return new Distance(BigDecimal.valueOf(centimeters).divide(BigDecimal.valueOf(100), MathContext.DECIMAL64).doubleValue(), unit);
+            case Kilometer: return new Distance(BigDecimal.valueOf(centimeters).divide(BigDecimal.valueOf(100000), MathContext.DECIMAL64).doubleValue(), unit);
             default: throw new IllegalArgumentException("Illegal distance unit: " + unit.name());
         }
     }
@@ -116,7 +124,7 @@ public class Distance implements Comparable<Distance>, Parcelable {
         if (this.unit == step.unit) {
             return new Distance(this.amount.add(step.amount).doubleValue(), this.unit);
         } else {
-            return Distance.fromMillis(getMillimeters() + step.getMillimeters(), this.unit);
+            return Distance.fromCentimeters(getCentimeters() + step.getCentimeters(), this.unit);
         }
     }
 
@@ -124,11 +132,11 @@ public class Distance implements Comparable<Distance>, Parcelable {
         this.name = name;
     }
 
-    private int getMillimeters() {
+    private int getCentimeters() {
         switch (unit) {
-            case Mile: return amount.multiply(BigDecimal.valueOf(1609344)).intValue();
-            case Meter: return amount.multiply(BigDecimal.valueOf(1000)).intValue();
-            case Kilometer: return amount.multiply(BigDecimal.valueOf(1000000)).intValue();
+            case Mile: return amount.multiply(BigDecimal.valueOf(160934.4)).intValue();
+            case Meter: return amount.multiply(BigDecimal.valueOf(100)).intValue();
+            case Kilometer: return amount.multiply(BigDecimal.valueOf(100000)).intValue();
             default: throw new IllegalArgumentException("Illegal distance unit: " + unit.name());
         }
     }
@@ -151,7 +159,7 @@ public class Distance implements Comparable<Distance>, Parcelable {
 
     @Override
     public int compareTo(Distance o) {
-        return Integer.compare(getMillimeters(), o.getMillimeters());
+        return Integer.compare(getCentimeters(), o.getCentimeters());
     }
 
     @Override
@@ -183,7 +191,7 @@ public class Distance implements Comparable<Distance>, Parcelable {
         if (this.unit == distance.unit) {
             return this.amount.divide(distance.amount, MathContext.DECIMAL64).doubleValue();
         } else {
-            return BigDecimal.valueOf(getMillimeters()).divide(BigDecimal.valueOf(distance.getMillimeters()), MathContext.DECIMAL64).doubleValue();
+            return BigDecimal.valueOf(getCentimeters()).divide(BigDecimal.valueOf(distance.getCentimeters()), MathContext.DECIMAL64).doubleValue();
         }
     }
 
@@ -191,7 +199,7 @@ public class Distance implements Comparable<Distance>, Parcelable {
         if (this.unit == distance.unit) {
             return this.amount.remainder(distance.amount, MathContext.DECIMAL64).doubleValue();
         } else {
-            return getMillimeters() % distance.getMillimeters();
+            return getCentimeters() % distance.getCentimeters();
         }
     }
 
