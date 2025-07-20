@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         mCalcDataVM = new ViewModelProvider(this, new ViewModelProvider.Factory() {
             @NonNull
             @Override
+            @SuppressWarnings("unchecked")
             public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
                 return (T) new CalculatorDataVM(getSharedPreferences("RunningCalc", MODE_PRIVATE));
             }

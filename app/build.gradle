@@ -20,13 +20,13 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
-    compileSdkVersion 34
+    compileSdkVersion 36
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "me.fetsh.pacecalculator"
         minSdkVersion 24
-        targetSdkVersion 34
+        targetSdkVersion 36
         versionCode 14
         versionName "1.4.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
